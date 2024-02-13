@@ -1,6 +1,4 @@
 
-
-
 class Vector {
     constructor(...vals) {
         this.vals = vals;
@@ -11,7 +9,6 @@ class Vector {
         }
         return this;
     }
-
     round() {
         return this.map((arr, i) => arr[i] = round(arr[i], 10));
     }
@@ -29,9 +26,7 @@ class Vector {
         this.map((arr, i) => sum += arr[i] * arr[i]);
         return Math.pow(sum, 0.5);
     }
-    setMagnitude(size) {
-        return this.normalize().scale(size);
-    }
+  
     normalize() {
         return this.scale(1 / this.length());
     }
@@ -44,37 +39,11 @@ class Vector {
     c() {
         return Vector.fromArray(this.vals.slice());
     }
-    overwrite(v) {
-        return this.map((arr, i) => arr[i] = v.vals[i]);
-    }
+
     dot(v) {
         var sum = 0;
         this.map((arr, i) => sum += arr[i] * v.vals[i]);
         return sum;
-    }
-    loop(callback) {
-        var counter = this.c();
-        counter.vals.fill(0);
-        while (counter.compare(this) == -1) {
-            callback(counter);
-            if (counter.incr(this)) {
-                break;
-            }
-        }
-    }
-    compare(v) {
-        for (var i = this.vals.length - 1; i >= 0; i--) {
-            if (this.vals[i] < v.vals[i]) {
-                continue;
-            }
-            else if (this.vals[i] == v.vals[i]) {
-                return 0;
-            }
-            else {
-                return 1;
-            }
-        }
-        return -1;
     }
     equals(v) {
         for (var i = 0; i < this.vals.length; i++) {
@@ -84,27 +53,8 @@ class Vector {
         }
         return true;
     }
-    incr(comparedTo) {
-        for (var i = 0; i < this.vals.length; i++) {
-            if ((this.vals[i] + 1) < comparedTo.vals[i]) {
-                this.vals[i]++;
-                return false;
-            }
-            else {
-                this.vals[i] = 0;
-            }
-        }
-        return true;
-    }
-    project(v) {
-        return v.c().scale(this.dot(v) / v.dot(v));
-    }
-    get(i) {
-        return this.vals[i];
-    }
-    set(i, val) {
-        this.vals[i] = val;
-    }
+
+
     get x() {
         return this.vals[0];
     }
@@ -123,40 +73,13 @@ class Vector {
     set z(val) {
         this.vals[2] = val;
     }
-    draw(ctxt) {
-        var width = 10;
-        var halfwidth = width / 2;
-        ctxt.fillRect(this.x - halfwidth, this.y - halfwidth, width, width);
-    }
-    cross(v) {
-        var x = this.y * v.z - this.z * v.y;
-        var y = this.z * v.x - this.x * v.z;
-        var z = this.x * v.y - this.y * v.x;
-        return new Vector(x, y, z);
-    }
+
     static fromArray(vals) {
         var x = new Vector();
         x.vals = vals;
         return x;
     }
-    loop2d(callback) {
-        var counter = new Vector(0, 0);
-        for (counter.x = 0; counter.x < this.x; counter.x++) {
-            for (counter.y = 0; counter.y < this.y; counter.y++) {
-                callback(counter);
-            }
-        }
-    }
-    loop3d(callback) {
-        var counter = new Vector(0, 0, 0);
-        for (counter.x = 0; counter.x < this.x; counter.x++) {
-            for (counter.y = 0; counter.y < this.y; counter.y++) {
-                for (counter.z = 0; counter.z < this.z; counter.z++) {
-                    callback(counter);
-                }
-            }
-        }
-    }
+
 }
 
 class RNG {
@@ -182,8 +105,6 @@ var TAU = Math.PI * 2;
 function map(val, from1, from2, to1, to2) {
     return lerp(to1, to2, inverseLerp(val, from1, from2));
 }
-
-
 
 function createCanvas(x, y) {
     var canvas = document.createElement('canvas');
@@ -231,48 +152,7 @@ function round(number, decimals) {
     return Math.round(number * mul) / mul;
 }
 
-function remove(arr, value) {
-    var index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
-    }
-    return arr;
-}
 
-
-
-
-
-
-class Entity {
-    constructor(init) {
-        this.id = null;
-        this.parent = null;
-        this.type = '';
-        this.name = '';
-        this.children = [];
-        // ordercount = 0
-        // sortorder = 0
-        this.synced = false;
-        Object.assign(this, init);
-        this.type = 'entity';
-    }
-
-    setParent(parent) {
-        if (parent == null) {
-            this.parent = null;
-        }
-        else {
-            parent.setChild(this);
-        }
-    }
-    getParent() {
-        return Entity.globalEntityStore.get(this.parent);
-    }
-
-
-   
-}
 
 
 var colormap = [
@@ -408,14 +288,8 @@ class Cube {
         return res;
     }
 
-    pathfind2d(dest) {
-        var misplacedface = this.cubeletFaces.find(f => f.getStartPosition2D(this).equals(dest));
-        var start = this.graph2d.find(k => k.pos.equals(misplacedface.getCurrentPosition2D(this)));
-        var goal = this.graph2d.find(k => k.pos.equals(misplacedface.getStartPosition2D(this)));
-        return pathfind(start, goal, this.graph2d).map(e => e.data).join(' ');
-    }
-
     apply(rotations, savehistory = true, perspective = 'F') {
+        this.reset();
         if (rotations) {
             rotations = this.changePerspective([rotations], perspective)[0];
             if (savehistory) {
@@ -426,7 +300,7 @@ class Cube {
                 this.rot(rot.c().normalize(), rot.length());
             }
         }
-        console.log("scram:", rotations)
+        console.log( rotations)
         return rotations;
     }
 
@@ -446,12 +320,6 @@ class Cube {
         var [valnormal, offset, quat] = this.directionsposmap.find(vals => vals[0].equals(normal));
         var frontrotated = Vector.fromArray(quat.rotateVector(pos3d.c().vals)).round();
         return new Vector(frontrotated.x + offset.x, frontrotated.y * -1 + offset.y);
-    }
- 
-
-
-    getFace(position) {
-        return this.cubeletFaces.find(f => f.getCurrentPosition2D(this).equals(position));
     }
 
     import(data) {
@@ -511,7 +379,6 @@ class Cube {
    
 }
 
-
 function axisRotate(v, axis, turns) {
     var added = false;
     if (v.vals.length == 2) {
@@ -527,13 +394,11 @@ function axisRotate(v, axis, turns) {
     return v;
 }
 
-
 var gridsize = 50;
-var screensize = new Vector(1000, 500);
+var screensize = new Vector(800, 530);
 var { canvas, ctxt } = createCanvas(screensize.x, screensize.y);
 var cube = new Cube();
 var rngseedelement = document.querySelector('#seedvalue');
-
 
 loop((dt) => {
     ctxt.fillStyle = '#fdd';
@@ -541,71 +406,67 @@ loop((dt) => {
     drawCube(cube, ctxt);
 });
 function drawCube(cube, ctxt) {
+    const gridSizeWithBorder = gridsize + 1; // Añadir un píxel adicional para el borde
+    const faceOffset = 10; // Separación entre caras
+    
     for (var face of cube.cubeletFaces) {
         var pos2d = cube.convert3dto2d(face.parent.pos, face.normal);
-        var abs = pos2d.c().scale(gridsize);
+        var abs = pos2d.c().scale(gridSizeWithBorder); // Escalar para tener en cuenta el tamaño del borde
+        
+        // Ajustar las coordenadas para la separación entre caras
+        abs.x += faceOffset;
+        abs.y += faceOffset;
+
+        // Ajustar la posición de la cara individualmente
+        if (face.normal.equals(new Vector(0, 0, 1))) { // Cara frontal
+            abs.x += 2.1 * gridSizeWithBorder;
+            abs.y += 0.6 * gridSizeWithBorder;
+
+        } else if (face.normal.equals(new Vector(0, 0, -1))) { // Cara trasera
+             abs.x += 1.5 * gridSizeWithBorder; 
+             abs.y += 0.6 * gridSizeWithBorder;
+
+         
+        }  else if (face.normal.equals(new Vector(-1, 0, 0))) { // Cara izquierda
+            abs.x += 1.2 * gridSizeWithBorder;
+            abs.y += 0.6 * gridSizeWithBorder;
+
+        }
+        else if (face.normal.equals(new Vector(1, 0, 0))) { // Cara derecha
+            abs.x += 1.8 * gridSizeWithBorder;
+            abs.y += 0.6 * gridSizeWithBorder;
+
+        }
+         
+        else if (face.normal.equals(new Vector(0, 1, 0))) { // Cara superior
+            abs.y += 0.3 * gridSizeWithBorder;
+            abs.x += 1.5 * gridSizeWithBorder;
+
+        }
+        else if (face.normal.equals(new Vector(0, -1, 0))) { // Cara inferior
+            abs.x += 1.5 * gridSizeWithBorder;
+            abs.y += 0.9 * gridSizeWithBorder;
+        }
+        
         ctxt.fillStyle = face.color;
         ctxt.fillRect(abs.x, abs.y, gridsize, gridsize);
-
+        
+        // Dibujar el borde negro
+        ctxt.strokeStyle = 'black';
+        ctxt.lineWidth = 1;
+        ctxt.strokeRect(abs.x, abs.y, gridSizeWithBorder, gridSizeWithBorder);
     }
 }
 
 
 
 
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+document.getElementById("siguiente").addEventListener("click", function() {
+    setRandomScramble();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 
 let timerInterval = 0;
@@ -643,13 +504,9 @@ document.addEventListener("keyup", function (event) {
             } else if (running) {
                 stopTimer();
                 updateAVg();   
-
                 setRandomScramble();
-
-            
                 updateTimer();
             } else if (!inspeccion) {
-                document.getElementById("timer").style.color = "black";
                 startInspection();
             }
         }
@@ -717,9 +574,7 @@ function stopTimer() {
         const elapsedTime = (currentTime - startTime) / 1000;
         const scramble = document.getElementById("scramble").textContent;
         saveTime(elapsedTime, scramble);
-
         updateTimesTable();
-
 
     }
 
@@ -732,7 +587,6 @@ function updateAVg() {
         const ao5Header = ultimoRegistro.ao5 !== null ? ultimoRegistro.ao5 : "-";
         const ao12Header = ultimoRegistro.ao12 !== null ? ultimoRegistro.ao12 : "-";
         const ao100Header = ultimoRegistro.ao100 !== null ? ultimoRegistro.ao100 : "-";
-        // document.getElementById("timer").textContent =  tiempoactual;
 
         document.getElementById("ao5-header").textContent = ao5Header;
         document.getElementById("ao12-header").textContent =  ao12Header;
@@ -740,7 +594,7 @@ function updateAVg() {
         document.getElementById("tiempo_actual").textContent =  tiempoactual;
         document.getElementById("ao5").textContent = ao5Header;
         document.getElementById("ao12").textContent =  ao12Header;
-        document.getElementById("ao100").textContent =  ao100Header;
+
     });
 
     $.get("/mejortiempo", function (data) {
@@ -787,7 +641,6 @@ function saveTime(time, scramble) {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("Tiempo guardado exitosamente");
         }
     };
     var data = JSON.stringify({ time: time, scramble: scramble });
@@ -839,15 +692,6 @@ function startCountdown() {
             }, 2000); // Cambiar a "DNF" después de 2 segundos
         }
     }
-
-  
-
-    // Detener el intervalo después de 15 segundos
-    setTimeout(() => {
-        clearInterval(countdownInterval);
-    }, 15000);
-
-
 
     if (!running) {
         clearInterval(timerInterval);
@@ -915,8 +759,7 @@ function setRandomScramble() {
     const scrambleString = scramble.join("&nbsp;");
     const scrambleElement = document.getElementById('scramble');
     scrambleElement.innerHTML = scrambleString;
-    console.log('scram:', scrambleElement.value );
-    console.log('scram:', perspectiveSelect.value) ;
+    console.log( scrambleElement.value );
     cube.apply(scrambleElement.value, true, perspectiveSelect.value);
 }
 

@@ -44,6 +44,9 @@ body {
     font-family: monospace;
 text-align: center;
 background-color: #fdd;
+   /* Estilos para hacer el textarea no editable */
+   pointer-events: none; /* Evita la interacción del usuario */
+   resize: none; /* Evita que se pueda cambiar el tamaño */
 }
 
 #times-table-container {
@@ -303,7 +306,16 @@ html:not(.m) #leftbar div>div:hover>span,
 	border-width: 1px;
 	border-width: 0.1rem;
 }
+#siguiente {
+    font-size: 80%;
+    color: #0026ff;
+    cursor: pointer;
+}
 
+#siguiente:hover {
+    background-color: #0000002c;
+    border-radius: 2px;
+}
 .mybutton.enable, .tab.enable {
 	border-style: inset;
 }
@@ -317,9 +329,9 @@ html:not(.m) #leftbar div>div:hover>span,
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 540px;
+    width: 450px;
     height: 300px;
-    margin-left: calc(100% - 540px); /* Restamos 250px del ancho total */
+    margin-left: calc(100% - 450px); /* Restamos 250px del ancho total */
     margin-top: -13.5%;
     background-color:  #fdd;;
     border-radius: 0.35rem;
