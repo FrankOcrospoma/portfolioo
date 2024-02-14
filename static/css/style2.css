@@ -132,14 +132,18 @@ background-color: #fdd;
     bottom: 0; /* Esto hará que el elemento choque con la parte inferior */
 }
 
-
+#logo, #astouch>span {
+    color: #ff0;
+    border-color: #dd0;
+    background-color: #000;
+}
 #leftbar {
     position: absolute;
     left: 0;
     top: 0;
     border: 2px solid;
     border: 0.15rem solid;
-
+    border-color: #cda;
     border-radius: 5px;
     border-radius: 0.35rem;
     width: 200px;
@@ -311,6 +315,24 @@ html:not(.m) #leftbar div>div:hover>span,
     color: #0026ff;
     cursor: pointer;
 }
+#tablas:hover{
+    background-color: #0000002c;
+
+}
+#times-body tr :hover {
+    background-color: #0000002c;
+}
+
+
+#times-head th:hover {
+    background-color: #0000002c;
+}
+#timess-body tr :hover {
+    background-color: #0000002c;
+}
+#timess-body tr td:first-child {
+    pointer-events: none; /* Esto deshabilitará el efecto de hover en el primer td de todas las filas */
+}
 
 #siguiente:hover {
     background-color: #0000002c;
@@ -320,10 +342,85 @@ html:not(.m) #leftbar div>div:hover>span,
 	border-style: inset;
 }
 
+.table {
+    border-collapse: separate;
+    text-indent: initial;
+    border-spacing: 2px;
+}
+/* .dialog .value, .dialog .value > * {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+} */
+.dialoginput, .dialogstats, .dialogexport, .dialogscropt {
+    left: 20%;
+    right: 20%;
+    top: 20%;
+    bottom: 20%;
+}
 
+.dialog {
+    position: absolute;
+    z-index: 100;
+    padding: 8px;
+    padding: 0.55rem;
+    border-radius: 5px;
+    border-radius: 0.35rem;
+    border: 2px outset;
+    border: 0.15rem outset;
+    text-align: center;
+    border-spacing: 0;
+    display: none;
+    width: 60vw;
+    border-color: #dbb;
+    background-color:  #fdd;
 
+}
+#gray {
+    background-color: #000;
+    z-index: 50;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
 
+#detalle{
+    height: 50vh;
+width: 58.5vw;
+resize: none;
+font-size: 1em;
+overflow-x: hidden;
+overflow-y: auto;
+border-radius: 5px;
+padding: 5px;
+background-color:  #dbb;
+font-size: 2.5vh;
+}
 /* cubo rubik */
+ input[type='button'] {
+    color: #000;
+    background: #fee;
+    border-color: #dbb;
+        cursor: pointer; 
+    border: 1px solid; 
+    border: 0.1rem solid;
+    border-radius: 3px;
+    border-radius: 0.2rem;
+    padding: 1px;
+    padding: 0.1rem;
+    vertical-align: middle;
+    font-size: 1em;
+     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+}
+
 
 #miCanvas {
     display: flex;
@@ -333,7 +430,7 @@ html:not(.m) #leftbar div>div:hover>span,
     height: 300px;
     margin-left: calc(100% - 450px); /* Restamos 250px del ancho total */
     margin-top: -13.5%;
-    background-color:  #fdd;;
+    background-color:  #fdd;
     border-radius: 0.35rem;
     border-color: #dbb;
     box-shadow: 0 0 0.6em #000;

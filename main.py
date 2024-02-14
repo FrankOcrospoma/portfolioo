@@ -46,34 +46,206 @@ def guardar_tiempo():
     cur.close()
 
     return jsonify({"message": "Tiempo guardado exitosamente"}), 200
+
+@app.route('/ao5detalle/<int:ultimo_id>')
+def ao5detalle(ultimo_id):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        WHERE id <= %s
+        LIMIT 5;
+    """, (ultimo_id,))
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+    
+
+@app.route('/ao12detalle/<int:ultimo_id>')
+def ao12detalleid(ultimo_id):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        WHERE id <= %s
+        LIMIT 12;
+    """, (ultimo_id,))
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+
+@app.route('/ao100detalle')
+def ao100detalle():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        LIMIT 100;
+    """)
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+
+    
+
+@app.route('/ao12detalle')
+def ao12detalle():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        LIMIT 12;
+    """, )
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+
+
 @app.route('/mejortiempo')
 def get_mejores():
     # Ejecutar una consulta para obtener los tiempos de la base de datos
     cur = conn.cursor()
-    cur.execute("SELECT MIN(time_interval) AS mejortiempo, MIN(ao5) AS mejorao5, MIN(ao12) AS mejora12,MIN(ao100) AS mejora100 FROM times WHERE session_id = 1")
+    cur.execute("""
+ 		
+WITH ranked_times AS (
+    SELECT 
+        id,
+        time_interval,
+        ao5,
+        ao12,
+        ao100,
+        ROW_NUMBER() OVER (ORDER BY time_interval) AS min_time_rank,
+        ROW_NUMBER() OVER (ORDER BY ao5) AS min_ao5_rank,
+        ROW_NUMBER() OVER (ORDER BY ao12) AS min_ao12_rank,
+        ROW_NUMBER() OVER (ORDER BY ao100) AS min_ao100_rank
+    FROM 
+        times
+    WHERE 
+        session_id = 1
+)
+SELECT 
+    MIN(time_interval) AS mejortiempo,
+    MIN(ao5) AS mejorao5,
+    MIN(ao12) AS mejorao12,
+	    MIN(ao100) AS mejorao100,
+
+	    (SELECT id FROM ranked_times WHERE min_time_rank = 1) AS id_mejortiempo,
+		    (SELECT id FROM ranked_times WHERE min_ao5_rank = 1) AS id_mejorao5,    
+(SELECT id FROM ranked_times WHERE min_ao12_rank = 1) AS id_mejorao12,
+
+    (SELECT id FROM ranked_times WHERE min_ao100_rank = 1) AS id_mejorao100
+
+FROM 
+    ranked_times;
+
+    """, )
     times = cur.fetchall()
     cur.close()
     
     # Convertir los tiempos en una lista de diccionarios
-    mejor = [{"mejortiempo": time[0], "mejorao5": time[1], "mejorao12": time[2],  "mejorao100": time[3]} for time in times]
+    mejor = [{"mejortiempo": time[0], "mejorao5": time[1], "mejorao12": time[2],  "mejorao100": time[3], "id_mejortiempo": time[4], "id_mejorao5": time[5], "id_mejorao12": time[6],  "id_mejorao100": time[7]} for time in times]
 
     return jsonify(mejor)
 
 @app.route('/times')
-def get_times():
+def get_times():    
     # Ejecutar una consulta para obtener los tiempos de la base de datos
     cur = conn.cursor()
-    cur.execute("SELECT time_interval, ao5, ao12, ao100, indice FROM times ORDER BY solve_date DESC")
+    cur.execute("SELECT time_interval, ao5, ao12, ao100, indice, id FROM times ORDER BY solve_date DESC ")
     times = cur.fetchall()
     cur.close()
     
     # Convertir los tiempos en una lista de diccionarios
-    times_list = [{"time_interval": time[0], "ao5": time[1], "ao12": time[2], "ao100": time[3], "indice": time[4]} for time in times]
+    times_list = [{"time_interval": time[0], "ao5": time[1], "ao12": time[2], "ao100": time[3], "indice": time[4], "id": time[5]} for time in times]
 
     return jsonify(times_list)
 @app.route('/get_time_difference')
 def get_time_difference():
-    cur = conn.cursor()
+    cur = conn.cursor() 
     cur.execute("""
         SELECT 
             (SELECT time_interval FROM times ORDER BY solve_date DESC LIMIT 1) - 

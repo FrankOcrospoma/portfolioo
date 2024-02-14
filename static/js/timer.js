@@ -468,6 +468,197 @@ document.getElementById("siguiente").addEventListener("click", function() {
 
 });
 
+function openModel(id, index) {
+    // Seleccionamos el modal
+    var modal = document.querySelector('.dialog.dialogstats');
+    var grayDiv = document.getElementById('gray');
+
+    if (modal && grayDiv) {
+        // Mostramos el modal cambiando su estilo display
+        modal.style.display = "block";
+        // Mostramos el div gray
+        grayDiv.style.display = "block";
+        if(index===2){
+            $.get("/ao5detalle/" + id, function(data) {
+                // Convertir la fecha en el formato YYYY-MM-DD
+                var solveDate = new Date(data[0].solve_date);
+                var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+            
+                // Crear la cadena de texto con el encabezado
+                var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                detalleText += "Avg de 5: " + data[0].ao5 + "\n\n";
+            
+                // Encontrar el mayor y el menor tiempo
+                var minTime = Number.MAX_VALUE;
+                var maxTime = Number.MIN_VALUE;
+                data.forEach(function(row, index) {
+                    var time = parseFloat(row.time_interval);
+                    if (time < minTime) {
+                        minTime = time;
+                    }
+                    if (time > maxTime) {
+                        maxTime = time;
+                    }
+                });
+            
+                // Agregar la lista de tiempos
+                detalleText += "Lista de tiempos:\n";
+                data.forEach(function(row, index) {
+                    detalleText += (index + 1) + ". ";
+                    if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                        detalleText += "(" + row.time_interval + ") ";
+                    } else {
+                        detalleText += row.time_interval + " ";
+                    }
+                    detalleText += row.scramble + "\n";
+                });
+            
+                // Asignar la cadena de texto al textarea
+                document.getElementById("detalle").value = detalleText;
+            });
+        }else if(index===3){
+           
+            if(id===0){
+                $.get("/ao12detalle", function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 12: " + data[0].ao12 + "\n\n";
+                    
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                    
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                    
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
+                }); 
+            }else{
+                $.get("/ao12detalle/" + id, function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 12: " + data[0].ao12 + "\n\n";
+                    
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                    
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                    
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
+                });
+            }
+            
+        }else if(index===4){
+            $.get("/ao100detalle", function(data) {
+                // Convertir la fecha en el formato YYYY-MM-DD
+                var solveDate = new Date(data[0].solve_date);
+                var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                
+                // Crear la cadena de texto con el encabezado
+                var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                detalleText += "Avg de 100: " + data[0].ao100 + "\n\n";
+                
+                // Encontrar el mayor y el menor tiempo
+                var minTime = Number.MAX_VALUE;
+                var maxTime = Number.MIN_VALUE;
+                data.forEach(function(row, index) {
+                    var time = parseFloat(row.time_interval);
+                    if (time < minTime) {
+                        minTime = time;
+                    }
+                    if (time > maxTime) {
+                        maxTime = time;
+                    }
+                });
+                
+                // Agregar la lista de tiempos
+                detalleText += "Lista de tiempos:\n";
+                data.forEach(function(row, index) {
+                    detalleText += (index + 1) + ". ";
+                    if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                        detalleText += "(" + row.time_interval + ") ";
+                    } else {
+                        detalleText += row.time_interval + " ";
+                    }
+                    detalleText += row.scramble + "\n";
+                });
+                
+                // Asignar la cadena de texto al textarea
+                document.getElementById("detalle").value = detalleText;
+            });
+            
+        }
+    
+        
+    } else {
+        console.error("No se pudo encontrar el modal '.dialog.dialogstats' o el div 'gray'.");
+    }
+}
+
+    
+    function cerrarModal() {
+        // Seleccionamos el modal
+        var modal = document.querySelector('.dialog.dialogstats');
+        var grayDiv = document.getElementById('gray');
+
+        if (modal) {
+            // Ocultamos el modal cambiando su estilo display
+            modal.style.display = "none";
+            grayDiv.style.display = "none";
+
+        } else {
+            console.error("No se pudo encontrar el modal '.dialog.dialogstats'.");
+        }
+    }
+    
 
 let timerInterval = 0;
 let startTime;
@@ -603,11 +794,23 @@ function updateAVg() {
         const mejorao5 = ultimoRegistro.ao5 !== null ? ultimoRegistro.mejorao5 : "-";
         const mejorao12 = ultimoRegistro.ao12 !== null ? ultimoRegistro.mejorao12 : "-";
         const mejorao100 = ultimoRegistro.ao100 !== null ? ultimoRegistro.mejorao100 : "-";
+        const id_mejor = ultimoRegistro.id_mejortiempo !== null ? ultimoRegistro.id_mejortiempo : "-";
+        const id_mejorao5 = ultimoRegistro.id_mejorao5 !== null ? ultimoRegistro.id_mejorao5 : "-";
+        const id_mejorao12 = ultimoRegistro.id_mejorao12 !== null ? ultimoRegistro.id_mejorao12 : "-";
+        const id_mejorao100 = ultimoRegistro.id_mejorao100 !== null ? ultimoRegistro.id_mejorao100 : "-";
+        
 
         document.getElementById("mejortiempo").textContent =  mejor;
         document.getElementById("mejorao5").textContent = mejorao5;
         document.getElementById("mejorao12").textContent =  mejorao12;
         document.getElementById("mejorao100").textContent =  mejorao100;
+        document.getElementById("id_mejortiempo").textContent =  id_mejor;
+        document.getElementById("id_mejorao5").textContent = id_mejorao5;
+        document.getElementById("id_mejorao12").textContent =  id_mejorao12;
+        document.getElementById("id_mejorao100").textContent =  id_mejorao100;
+
+
+
     });
     $.get("/get_time_difference", function (data) {
         const diferencia = data;
@@ -699,7 +902,6 @@ function startCountdown() {
         timerInterval = setInterval(updateCountdown, 10);
     }
 }
-
 $.get("/times", function (data) {
     data.forEach(function (tiempo) {
         agregarTiempo(tiempo);
@@ -712,10 +914,24 @@ function agregarTiempo(tiempo) {
     var cellTime = document.createElement("td");
     var cellAo5 = document.createElement("td");
     var cellAo12 = document.createElement("td");
+    var hiddenId = document.createElement("input"); // Input oculto para almacenar el ID
+    hiddenId.type = "hidden";
+    hiddenId.value = tiempo.id; // Aquí almacenamos el ID en el input oculto
     cellIndex.textContent = tiempo.indice;
     cellTime.textContent = tiempo.time_interval;
     cellAo5.textContent = tiempo.ao5 !== null ? tiempo.ao5 : "-";
     cellAo12.textContent = tiempo.ao12 !== null ? tiempo.ao12 : "-";
+    
+    // Agregar evento de clic a cada celda
+    [cellIndex, cellTime, cellAo5, cellAo12].forEach(function(cell, index) {
+        cell.addEventListener('click', function() {
+            var id = hiddenId.value; // Obtener el ID almacenado en el input oculto
+            console.log('Celda clickeada, ID:', id, 'Columna:', index);
+            openModel(id, index);
+        });
+    });
+
+    row.appendChild(hiddenId); // Agregar input oculto a la fila
     row.appendChild(cellIndex);
     row.appendChild(cellTime);
     row.appendChild(cellAo5);
@@ -723,6 +939,7 @@ function agregarTiempo(tiempo) {
     var table = document.getElementById("times-body");
     table.appendChild(row);
 }
+
 
 const moves = ["U", "D", "L", "R", "F", "B"];
 const modifiers = ["", "'", "2"];
