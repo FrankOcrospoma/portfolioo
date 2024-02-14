@@ -47,8 +47,41 @@ def guardar_tiempo():
 
     return jsonify({"message": "Tiempo guardado exitosamente"}), 200
 
+@app.route('/ao5detalle')
+def ao5detalle():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        LIMIT 5;
+    """,)
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+    
 @app.route('/ao5detalle/<int:ultimo_id>')
-def ao5detalle(ultimo_id):
+def ao5detalleid(ultimo_id):
     cur = conn.cursor()
     cur.execute("""
         SELECT id,
@@ -80,8 +113,6 @@ def ao5detalle(ultimo_id):
         })
 
     return jsonify(times_list)
-    
-
 @app.route('/ao12detalle/<int:ultimo_id>')
 def ao12detalleid(ultimo_id):
     cur = conn.cursor()
@@ -116,6 +147,41 @@ def ao12detalleid(ultimo_id):
 
     return jsonify(times_list)
 
+
+    
+
+@app.route('/ao12detalle')
+def ao12detalle():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        LIMIT 12;
+    """, )
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
 @app.route('/ao100detalle')
 def ao100detalle():
     cur = conn.cursor()
@@ -148,11 +214,8 @@ def ao100detalle():
         })
 
     return jsonify(times_list)
-
-    
-
-@app.route('/ao12detalle')
-def ao12detalle():
+@app.route('/ao100detalle/<int:ultimo_id>')
+def ao100detalleid(ultimo_id):
     cur = conn.cursor()
     cur.execute("""
         SELECT id,
@@ -164,8 +227,9 @@ def ao12detalle():
                ao100,
                solve_date
         FROM times
-        LIMIT 12;
-    """, )
+        WHERE id <= %s
+        LIMIT 100;
+    """, (ultimo_id,))
     times = cur.fetchall()
     cur.close()
 

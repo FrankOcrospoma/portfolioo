@@ -472,50 +472,91 @@ function openModel(id, index) {
     // Seleccionamos el modal
     var modal = document.querySelector('.dialog.dialogstats');
     var grayDiv = document.getElementById('gray');
-
+    console.log('weveo',document.getElementById('id_mejorao5').textContent)
     if (modal && grayDiv) {
         // Mostramos el modal cambiando su estilo display
         modal.style.display = "block";
         // Mostramos el div gray
         grayDiv.style.display = "block";
         if(index===2){
-            $.get("/ao5detalle/" + id, function(data) {
-                // Convertir la fecha en el formato YYYY-MM-DD
-                var solveDate = new Date(data[0].solve_date);
-                var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
-            
-                // Crear la cadena de texto con el encabezado
-                var detalleText = "Generado por csTimer el " + formattedDate + "\n";
-                detalleText += "Avg de 5: " + data[0].ao5 + "\n\n";
-            
-                // Encontrar el mayor y el menor tiempo
-                var minTime = Number.MAX_VALUE;
-                var maxTime = Number.MIN_VALUE;
-                data.forEach(function(row, index) {
-                    var time = parseFloat(row.time_interval);
-                    if (time < minTime) {
-                        minTime = time;
-                    }
-                    if (time > maxTime) {
-                        maxTime = time;
-                    }
+            if(id===0){
+                $.get("/ao5detalle", function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 5: " + data[0].ao5 + "\n\n";
+                
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
                 });
-            
-                // Agregar la lista de tiempos
-                detalleText += "Lista de tiempos:\n";
-                data.forEach(function(row, index) {
-                    detalleText += (index + 1) + ". ";
-                    if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
-                        detalleText += "(" + row.time_interval + ") ";
-                    } else {
-                        detalleText += row.time_interval + " ";
-                    }
-                    detalleText += row.scramble + "\n";
+            }else{
+                $.get("/ao5detalle/" + id, function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 5: " + data[0].ao5 + "\n\n";
+                
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
                 });
-            
-                // Asignar la cadena de texto al textarea
-                document.getElementById("detalle").value = detalleText;
-            });
+            }
+          
         }else if(index===3){
            
             if(id===0){
@@ -597,43 +638,84 @@ function openModel(id, index) {
             }
             
         }else if(index===4){
-            $.get("/ao100detalle", function(data) {
-                // Convertir la fecha en el formato YYYY-MM-DD
-                var solveDate = new Date(data[0].solve_date);
-                var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
-                
-                // Crear la cadena de texto con el encabezado
-                var detalleText = "Generado por csTimer el " + formattedDate + "\n";
-                detalleText += "Avg de 100: " + data[0].ao100 + "\n\n";
-                
-                // Encontrar el mayor y el menor tiempo
-                var minTime = Number.MAX_VALUE;
-                var maxTime = Number.MIN_VALUE;
-                data.forEach(function(row, index) {
-                    var time = parseFloat(row.time_interval);
-                    if (time < minTime) {
-                        minTime = time;
-                    }
-                    if (time > maxTime) {
-                        maxTime = time;
-                    }
+            if(id===0){
+                $.get("/ao100detalle", function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 100: " + data[0].ao100 + "\n\n";
+                    
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                    
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                    
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
                 });
-                
-                // Agregar la lista de tiempos
-                detalleText += "Lista de tiempos:\n";
-                data.forEach(function(row, index) {
-                    detalleText += (index + 1) + ". ";
-                    if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
-                        detalleText += "(" + row.time_interval + ") ";
-                    } else {
-                        detalleText += row.time_interval + " ";
-                    }
-                    detalleText += row.scramble + "\n";
+            } else{
+                $.get("/ao100detalle/"+ id, function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Avg de 100: " + data[0].ao100 + "\n\n";
+                    
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                    
+                    // Agregar la lista de tiempos
+                    detalleText += "Lista de tiempos:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                        if (parseFloat(row.time_interval) === minTime || parseFloat(row.time_interval) === maxTime) {
+                            detalleText += "(" + row.time_interval + ") ";
+                        } else {
+                            detalleText += row.time_interval + " ";
+                        }
+                        detalleText += row.scramble + "\n";
+                    });
+                    
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
                 });
-                
-                // Asignar la cadena de texto al textarea
-                document.getElementById("detalle").value = detalleText;
-            });
+            }
+
             
         }
     
