@@ -17,14 +17,7 @@ conn = psycopg2.connect(
 
 @app.route('/')
 def index():
-    if 'user_id' not in session:
-        # Si no hay un usuario en la sesión, crea uno nuevo y almacena su ID en la sesión
-        cur = conn.cursor()
-        cur.execute("INSERT INTO users DEFAULT VALUES RETURNING id;")
-        user_id = cur.fetchone()[0]
-        conn.commit()
-        cur.close()
-        session['user_id'] = user_id
+
     return render_template('index.html')
 
 @app.route('/guardar-tiempo', methods=['POST'])
@@ -44,6 +37,14 @@ def guardar_tiempo():
 
 @app.route('/timer-cube')
 def index_timer():
+    if 'user_id' not in session:
+    # Si no hay un usuario en la sesión, crea uno nuevo y almacena su ID en la sesión
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users DEFAULT VALUES RETURNING id;")
+        user_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        session['user_id'] = user_id
     return render_template('indexTimer.html')
 @app.route('/rest')
 def rest():
