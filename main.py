@@ -384,5 +384,5 @@ def update_agua():
     return 'Configuración exitosa.', 200
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
 
