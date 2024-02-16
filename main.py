@@ -1,12 +1,9 @@
 from flask import Flask, request, jsonify, render_template, session
-from flask_cors import CORS  # Importa el módulo Flask-CORS
 
 import psycopg2
 
 app = Flask(__name__, static_url_path='/static')
-CORS(app)  # Habilita CORS para tu aplicación Flask
-
-app.secret_key = 'your_secret_key'  # Asegúrate de definir una clave secreta para las sesiones
+app.secret_key = 'frank'  # Asegúrate de definir una clave secreta para las sesiones
 
 # Configura la conexión a la base de datos
 conn = psycopg2.connect(
@@ -327,19 +324,22 @@ def get_mejores():
 
     return jsonify(mejor)
 @app.route('/times')
-def get_times():    
-    # Ejecutar una consulta para obtener los tiempos del usuario actual de la base de datos
-    cur = conn.cursor()
-    user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
+def get_times():
+    try:    
+        # Ejecutar una consulta para obtener los tiempos del usuario actual de la base de datos
+        cur = conn.cursor()
+        user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
 
-    cur.execute("SELECT time_interval, ao5, ao12, ao100, indice, id FROM times WHERE user_id = %s ORDER BY solve_date DESC ", (user_id,))
-    times = cur.fetchall()
-    cur.close()
-    
-    # Convertir los tiempos en una lista de diccionarios
-    times_list = [{"time_interval": time[0], "ao5": time[1], "ao12": time[2], "ao100": time[3], "indice": time[4], "id": time[5]} for time in times]
+        cur.execute("SELECT time_interval, ao5, ao12, ao100, indice, id FROM times WHERE user_id = %s ORDER BY solve_date DESC ", (user_id,))
+        times = cur.fetchall()
+        cur.close()
+        
+        # Convertir los tiempos en una lista de diccionarios
+        times_list = [{"time_interval": time[0], "ao5": time[1], "ao12": time[2], "ao100": time[3], "indice": time[4], "id": time[5]} for time in times]
 
-    return jsonify(times_list)
+        return jsonify(times_list)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/get_time_difference')
 def get_time_difference():
