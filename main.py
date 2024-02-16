@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 
 import psycopg2
 
+
 app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'your_secret_key'  # Asegúrate de definir una clave secreta para las sesiones
 
 # Configura la conexión a la base de datos
 conn = psycopg2.connect(
@@ -15,7 +17,31 @@ conn = psycopg2.connect(
 
 @app.route('/')
 def index():
+    if 'user_id' not in session:
+        # Si no hay un usuario en la sesión, crea uno nuevo y almacena su ID en la sesión
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users DEFAULT VALUES RETURNING id;")
+        user_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        session['user_id'] = user_id
     return render_template('index.html')
+
+@app.route('/guardar-tiempo', methods=['POST'])
+def guardar_tiempo():
+    data = request.get_json()
+    time = data['time']
+    scramble = data['scramble']
+    user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
+
+    # Insertar el tiempo en la base de datos asociado al ID del usuario
+    cur = conn.cursor()
+    cur.execute("INSERT INTO times (session_id, time_interval, scramble, user_id) VALUES (%s, %s, %s, %s)", (1, time, scramble, user_id))
+    conn.commit()
+    cur.close()
+
+    return jsonify({"message": "Tiempo guardado exitosamente"}), 200
+
 @app.route('/timer-cube')
 def index_timer():
     return render_template('indexTimer.html')
@@ -33,19 +59,7 @@ def vet():
 @app.route('/fantasma')
 def fantasma():
     return render_template('fantasma.html')
-@app.route('/guardar-tiempo', methods=['POST'])
-def guardar_tiempo():
-    data = request.get_json()
-    time = data['time']
-    scramble = data['scramble']
-    
-    # Insertar el tiempo en la base de datos
-    cur = conn.cursor()
-    cur.execute("INSERT INTO times (session_id, time_interval, scramble) VALUES (%s, %s, %s)", (1, time, scramble))
-    conn.commit()
-    cur.close()
 
-    return jsonify({"message": "Tiempo guardado exitosamente"}), 200
 
 @app.route('/ao5detalle')
 def ao5detalle():
