@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify, render_template, session
+from flask_cors import CORS  # Importa el módulo Flask-CORS
 
 import psycopg2
 
 app = Flask(__name__, static_url_path='/static')
+CORS(app)  # Habilita CORS para tu aplicación Flask
+
 app.secret_key = 'your_secret_key'  # Asegúrate de definir una clave secreta para las sesiones
 
 # Configura la conexión a la base de datos
