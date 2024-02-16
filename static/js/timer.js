@@ -917,6 +917,8 @@ function updateTimesTable() {
         data.forEach(function (tiempo) {
             agregarTiempo(tiempo);
         });
+        agregarIndice();
+
     });
 }
 
@@ -988,8 +990,11 @@ $.get("/times", function (data) {
     data.forEach(function (tiempo) {
         agregarTiempo(tiempo);
     });
+        agregarIndice();
+
 });
 
+var rowCount=0;
 function agregarTiempo(tiempo) {
     var row = document.createElement("tr");
     var cellIndex = document.createElement("td");
@@ -999,7 +1004,7 @@ function agregarTiempo(tiempo) {
     var hiddenId = document.createElement("input"); // Input oculto para almacenar el ID
     hiddenId.type = "hidden";
     hiddenId.value = tiempo.id; // Aquí almacenamos el ID en el input oculto
-    cellIndex.textContent = tiempo.indice;
+    cellIndex.textContent = rowCount; // Asignar el número autoincremental al cellIndex
     cellTime.textContent = tiempo.time_interval;
     cellAo5.textContent = tiempo.ao5 !== null ? tiempo.ao5 : "-";
     cellAo12.textContent = tiempo.ao12 !== null ? tiempo.ao12 : "-";
@@ -1021,6 +1026,18 @@ function agregarTiempo(tiempo) {
     var table = document.getElementById("times-body");
     table.appendChild(row);
 }
+
+function agregarIndice() {
+    var table = document.getElementById("times-body");
+    var rowCount = table.rows.length;
+
+    for (var i = 0; i < rowCount; i++) {
+        var row = table.rows[i];
+        var cellIndex = row.cells[0]; // La primera celda de cada fila es la columna de índice
+        cellIndex.textContent = rowCount - i; // Asigna el índice consecutivo descendente según la cantidad de filas
+    }
+}
+
 
 
 const moves = ["U", "D", "L", "R", "F", "B"];
