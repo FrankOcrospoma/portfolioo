@@ -67,7 +67,25 @@
         </div>
     </div>
     <div id="contenedor_lateral">
-
+        <div><span class="click">Sesión</span><select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="new">New..</option>
+                <option value="del">Delete..</option>
+            </select><input type="button" value="X"></div>
         <div id="average">
             <table id="table_aos">
                 <thead>
@@ -83,7 +101,7 @@
                         <td style="  font-weight: bold; ">Tiempo</td>
                         <td onclick="openModel(0,1)" style="  color: #0026ff;" id="tiempo_actual"></td>
                         <td onclick="openModel(document.getElementById('id_mejortiempo').textContent, 1, 0)"
-                        style="  color: #0026ff;" id="mejortiempo"></td>
+                            style="  color: #0026ff;" id="mejortiempo"></td>
 
                     </tr>
                     <tr>
@@ -196,8 +214,9 @@
                 <tr style="height:100%;">
                     <td style="position:relative;">
                         <div class="value">
-                            <div  style="text-align: center; font-family: initial; font-size: 1.2em;"><span id="tiemposolve"
-                                    style="font-size:2.5em;">0.00</span><br><br><span class="click" data="c"> 📋
+                            <div style="text-align: center; font-family: initial; font-size: 1.2em;"><span
+                                    id="tiemposolve" style="font-size:2.5em;">0.00</span><br><br><span class="click"
+                                    data="c"> 📋
                                 </span>|<span class="click" data="p"> OK </span>|<span class="click" data="p"> +2
                                 </span>|<span class="click" data="p"> DNF </span>| <input type="button" data="d"
                                     value="X"><br>
@@ -228,8 +247,10 @@
                     <input id="id_tiemposolve" type="hidden">
 
                     <td>
-                        <div class="button"><input type="button" class="buttonOK" value="Aceptar"  onclick="cerrarModal()"><input type="button"
-                             class="buttonOK" value="Estadística de 1 solución."  onclick="openModel(document.getElementById('id_tiemposolve').textContent, 1, 0)"></div>
+                        <div class="button"><input type="button" class="buttonOK" value="Aceptar"
+                                onclick="cerrarModal()"><input type="button" class="buttonOK"
+                                value="Estadística de 1 solución."
+                                onclick="openModel(document.getElementById('id_tiemposolve').textContent, 1, 0)"></div>
                     </td>
                 </tr>
             </tbody>
