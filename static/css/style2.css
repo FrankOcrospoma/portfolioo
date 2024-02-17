@@ -49,22 +49,22 @@ background-color: #fdd;
    resize: none; /* Evita que se pueda cambiar el tamaño */
 }
 
-#times-table-container {
-    max-height: 72%;
-    overflow-y: auto;
-   
-}
+
 
 #average {
     width: 100%;
     max-height: 500px;
 }
-
+#times-table-container {
+    max-height: 69%; /* Establecer el límite de altura */
+    overflow-y: auto; /* Permitir el scroll vertical si el contenido supera el límite de altura */
+  }
 /* Ocultar el scrollbar */
 #times-table-container::-webkit-scrollbar {
     display: none;
-}
+  
 
+}
 
 #times-table-container th,
 #times-table-container td {
@@ -272,7 +272,7 @@ html:not(.m) #leftbar div>div:hover>span,
 #table_solves, #table_aos{
     width: 98%;
     margin: 0 auto; /* Margen automático a la izquierda y a la derecha para centrar la tabla */
-    height: 100%;
+
 }
 #aos{
    font-size: 70px;
