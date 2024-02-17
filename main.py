@@ -52,6 +52,11 @@ def guardar_tiempo():
     # Insertar el tiempo en la base de datos asociado al ID del usuario
     cur = conn.cursor()
     cur.execute("INSERT INTO times (session_id, time_interval, scramble, user_id) VALUES (%s, %s, %s, %s)", (1, time, scramble, user_id))
+    cur.execute("call calculate_ao5(%s, %s)", (1, user_id))
+    cur.execute("call calculate_ao12(%s, %s)", (1, user_id))
+    cur.execute("call calculate_ao12(%s, %s)", (1, user_id))
+
+
     conn.commit()
     cur.close()
 
