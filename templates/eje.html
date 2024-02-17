@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        #container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse; /* Para superponer los divs verticalmente y en orden inverso */
+}
+
+#div1 {
+  width: 100%;
+  height: 70%; /* Ambos divs ocupan el 50% de la altura del contenedor */
+  background-color: lightblue;
+  border: 1px solid black;
+}
+#div2 {
+  width: 100%;
+  height: 30%; /* Ambos divs ocupan el 50% de la altura del contenedor */
+  background-color: lightblue;
+  border: 1px solid black;
+}
+
+    </style>
+    <div id="container">
+        <div id="div1">Div 1</div>
+        <div id="div2">Div 2</div>
+      </div>
+      
+</body>
+</html>

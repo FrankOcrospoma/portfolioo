@@ -38,8 +38,8 @@ body {
 #scramble {
     font-size: 38px;
     margin-bottom: 20px;
-    width: 80%;
-    height: 50%;
+    width: 98%;
+    height: 60%;
     flex: 1;
     font-family: monospace;
 text-align: center;
@@ -56,7 +56,7 @@ background-color: #fdd;
 }
 
 #average {
-    width: 11%;
+    width: 100%;
     max-height: 500px;
 }
 
@@ -127,7 +127,7 @@ background-color: #fdd;
     width: 200px;
     width: 15.5rem;    margin-left: 2px;
     box-shadow: 0 0 0.6em #000;
-    height: 72.5vh;
+    height: 65%;
  
     bottom: 0; /* Esto hará que el elemento choque con la parte inferior */
 }
@@ -144,12 +144,9 @@ background-color: #fdd;
     border: 2px solid;
     border: 0.15rem solid;
     border-color: #cda;
-    border-radius: 5px;
     border-radius: 0.35rem;
-    width: 200px;
     width: 15.5rem;
-    height: 200px;
-    height: 15.5rem;
+    height: 35%;
 }
 
 
@@ -273,7 +270,9 @@ html:not(.m) #leftbar div>div:hover>span,
     }
 }
 #table_solves, #table_aos{
-    width: 26.7vh;
+    width: 98%;
+    margin: 0 auto; /* Margen automático a la izquierda y a la derecha para centrar la tabla */
+
 }
 #aos{
    font-size: 70px;
@@ -436,6 +435,8 @@ font-size: 2.5vh;
     box-shadow: 0 0 0.6em #000;
     bottom: 0;
     right: 0;
+    position: absolute; 
+ 
 }
 
 .rubik-face {
