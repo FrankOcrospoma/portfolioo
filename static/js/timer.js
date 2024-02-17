@@ -929,7 +929,7 @@ function startInspection() {
         document.getElementById("leftbar").style.display = "none";
         document.getElementById("miCanvas").style.display = "none";
 
-        document.getElementById("timer").style.fontSize = "3550%";
+        document.getElementById("timer").style.fontSize = "3250%";
         document.getElementById("timer").style.color = "red";
 
     }
@@ -1075,6 +1075,8 @@ function updateTimer() {
 
 function startCountdown() {
     let countdown = 15;
+    var play = false;
+    var play4 = false;
 
     function updateCountdown() {
         if (!inspeccion) {
@@ -1085,14 +1087,25 @@ function startCountdown() {
             document.getElementById("timer").textContent = countdown.toFixed();
             countdown -= 0.01;
         }
-        if (countdown < 8) {
+        if (countdown <= 8 && !play) {
             document.getElementById("8").style.display = "block";
             
             document.getElementById("8").textContent = "8s!";
-
+            // Obtener el elemento de audio
+            var audio8 = document.getElementById("audio8");
+            
+            // Reproducir el audio
+            audio8.play();
+            play=true;
         }
-        if (countdown < 4) {
+        if (countdown <= 4  && !play4) {
             document.getElementById("8").textContent = "Go!!!";
+             // Obtener el elemento de audio
+             var audio4 = document.getElementById("audio4");
+            
+             // Reproducir el audio
+             audio4.play();
+             play4=true;
         }
         if (countdown < 1 && document.getElementById("timer").textContent !== "DNF") {
             document.getElementById("timer").textContent = "+2";
