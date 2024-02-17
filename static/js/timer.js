@@ -913,7 +913,38 @@ document.addEventListener("keyup", function (event) {
 document.addEventListener("DOMContentLoaded", function () {
     updateAVg();    
     setRandomScramble();
+   
+  
+    // Función para almacenar el valor seleccionado en una cookie
+    function saveSelectedSession() {
+        var selectElement = document.getElementById("sessionSelect");
+        var selectedValue = selectElement.value;
+        document.cookie = "selectedSession=" + selectedValue + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    }
 
+    // Función para restaurar el valor seleccionado desde una cookie
+    function restoreSelectedSession() {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith("selectedSession=")) {
+                var selectedValue = cookie.substring("selectedSession=".length);
+                document.getElementById("sessionSelect").value = selectedValue;
+                updateTimesTable(selectedValue);
+                break;
+            }
+        }
+    }
+
+    // Ejecutar la función para restaurar el valor seleccionado al cargar la página
+    window.onload = function() {
+        restoreSelectedSession();
+    };
+
+    // Ejecutar la función para guardar el valor seleccionado al cambiar la selección
+    document.getElementById("sessionSelect").addEventListener("change", function() {
+        saveSelectedSession();
+    });
 
 });
 
@@ -1035,8 +1066,8 @@ function updateAVg() {
     });
 }
 
-function updateTimesTable() {
-    $.get("/times", function (data) {
+function updateTimesTable(sesion_id) {
+    $.get("/times/"+sesion_id, function (data) {
         document.getElementById("times-body").innerHTML = "";
         data.forEach(function (tiempo) {
             agregarTiempo(tiempo);
@@ -1123,13 +1154,7 @@ function startCountdown() {
         timerInterval = setInterval(updateCountdown, 10);
     }
 }
-$.get("/times", function (data) {
-    data.forEach(function (tiempo) {
-        agregarTiempo(tiempo);
-    });
-        agregarIndice();
 
-});
 
 var rowCount=0;
 function agregarTiempo(tiempo) {
@@ -1224,7 +1249,12 @@ function isForbiddenMove(previousMove, currentMove) {
     return previousMove && forbiddenMoves[previousMove].includes(currentMove);
 }
 
-
+document.querySelector('select').addEventListener('change', function() {
+    var selectedOption = this.value;
+    // Aquí puedes realizar la acción que desees con la opción seleccionada
+    console.log('Opción seleccionada:', selectedOption);
+    updateTimesTable(selectedOption)
+});
 
 
 

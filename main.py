@@ -208,6 +208,7 @@ def ao5detalleid(ultimo_id):
         })
 
     return jsonify(times_list)
+
 @app.route('/ao12detalle/<int:ultimo_id>')
 def ao12detalleid(ultimo_id):
     cur = conn.cursor()
@@ -354,8 +355,6 @@ def ao100detalleid(ultimo_id):
     return jsonify(times_list)
 
 
-
-
 @app.route('/mejortiempo')
 def get_mejores():
     # Ejecutar una consulta para obtener los tiempos de la base de datos
@@ -403,14 +402,15 @@ def get_mejores():
              for time in times]
 
     return jsonify(mejor)
-@app.route('/times')
-def get_times():
+
+@app.route('/times/<int:sesion_id>')
+def get_times(sesion_id):
     try:    
         # Ejecutar una consulta para obtener los tiempos del usuario actual de la base de datos
         cur = conn.cursor()
         user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
 
-        cur.execute("SELECT time_interval, ao5, ao12, ao100, indice, id FROM times WHERE user_id = %s ORDER BY solve_date DESC ", (user_id,))
+        cur.execute("SELECT time_interval, ao5, ao12, ao100, indice, id FROM times WHERE user_id = %s and session_id = %s ORDER BY solve_date DESC ", (user_id,sesion_id))
         times = cur.fetchall()
         cur.close()
         
