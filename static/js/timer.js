@@ -462,6 +462,15 @@ function drawCube(cube, ctxt) {
 
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var selectedOption;
+document.querySelector('select').addEventListener('change', function() {
+    selectedOption = this.value;
+    // Aquí puedes realizar la acción que desees con la opción seleccionada
+    console.log('Opción seleccionada:', selectedOption);
+    updateTimesTable(selectedOption)
+});
+
+
 
 document.getElementById("siguiente").addEventListener("click", function() {
     setRandomScramble();
@@ -1002,7 +1011,9 @@ function stopTimer() {
         const elapsedTime = (currentTime - startTime) / 1000;
         const scramble = document.getElementById("scramble").textContent;
         saveTime(elapsedTime, scramble);
-        updateTimesTable();
+        var selectElement = document.getElementById("sessionSelect");
+        var selectedValue = selectElement.value;
+        updateTimesTable(selectedValue);
 
     }
 
@@ -1248,15 +1259,6 @@ function getRandomElement(array) {
 function isForbiddenMove(previousMove, currentMove) {
     return previousMove && forbiddenMoves[previousMove].includes(currentMove);
 }
-
-document.querySelector('select').addEventListener('change', function() {
-    var selectedOption = this.value;
-    // Aquí puedes realizar la acción que desees con la opción seleccionada
-    console.log('Opción seleccionada:', selectedOption);
-    updateTimesTable(selectedOption)
-});
-
-
 
 
 
