@@ -425,7 +425,7 @@ font-size: 2.5vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 22%;
+    width: 25%;
     height: 35%;
     margin-left: calc(100% - 450px); /* Restamos 250px del ancho total */
     margin-top: -13.5%;
