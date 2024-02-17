@@ -468,17 +468,130 @@ document.getElementById("siguiente").addEventListener("click", function() {
 
 });
 
-function openModel(id, index) {
+function openModel(id, index, det) {
     // Seleccionamos el modal
     var modal = document.querySelector('.dialog.dialogstats');
+    var modalTiempo = document.querySelector('.dialog.dialogcfm');
+
     var grayDiv = document.getElementById('gray');
-    console.log('weveo',document.getElementById('id_mejorao5').textContent)
     if (modal && grayDiv) {
-        // Mostramos el modal cambiando su estilo display
+    
+
+        if(index===1){
+            if(id===0){
+            // Mostramos el modal cambiando su estilo display
+                modal.style.display = "block";
+                // Mostramos el div gray
+                grayDiv.style.display = "block";
+                $.get("/tiempodetalle", function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                
+                    // Crear la cadena de texto con el encabezado
+                    var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                    detalleText += "Single: " + data[0].time_interval + "\n\n";
+                
+                    // Encontrar el mayor y el menor tiempo
+                    var minTime = Number.MAX_VALUE;
+                    var maxTime = Number.MIN_VALUE;
+                    data.forEach(function(row, index) {
+                        var time = parseFloat(row.time_interval);
+                        if (time < minTime) {
+                            minTime = time;
+                        }
+                        if (time > maxTime) {
+                            maxTime = time;
+                        }
+                    });
+                
+                    // Agregar la lista de tiempos
+                    detalleText += "Tiempo:\n";
+                    data.forEach(function(row, index) {
+                        detalleText += (index + 1) + ". ";
+                     
+                        detalleText += row.scramble + "\n";
+                    });
+                
+                    // Asignar la cadena de texto al textarea
+                    document.getElementById("detalle").value = detalleText;
+                });
+            }else{
+                if(det===0){
+                    cerrarModal();
+                    // Mostramos el modal cambiando su estilo display
+                    modal.style.display = "block";
+                    // Mostramos el div gray
+                    grayDiv.style.display = "block";
+                    $.get("/tiempodetalle/"+ id, function(data) {
+                        // Convertir la fecha en el formato YYYY-MM-DD
+                        var solveDate = new Date(data[0].solve_date);
+                        var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    
+                        // Crear la cadena de texto con el encabezado
+                        var detalleText = "Generado por csTimer el " + formattedDate + "\n";
+                        detalleText += "Single: " + data[0].time_interval + "\n\n";
+                    
+                        // Encontrar el mayor y el menor tiempo
+                        var minTime = Number.MAX_VALUE;
+                        var maxTime = Number.MIN_VALUE;
+                        data.forEach(function(row, index) {
+                            var time = parseFloat(row.time_interval);
+                            if (time < minTime) {
+                                minTime = time;
+                            }
+                            if (time > maxTime) {
+                                maxTime = time;
+                            }
+                        });
+                    
+                        // Agregar la lista de tiempos
+                        detalleText += "Tiempo:\n";
+                        data.forEach(function(row, index) {
+                            detalleText += (index + 1) + ". ";
+                         
+                            detalleText += row.scramble + "\n";
+                        });
+                    
+                        // Asignar la cadena de texto al textarea
+                        document.getElementById("detalle").value = detalleText;
+                    });
+                }else{
+
+
+                // Mostramos el modal cambiando su estilo display
+                modalTiempo.style.display = "block";
+                // Mostramos el div gray
+                grayDiv.style.display = "block";
+
+                $.get("/tiempodetalle/"+ id, function(data) {
+                    // Convertir la fecha en el formato YYYY-MM-DD
+                    var solveDate = new Date(data[0].solve_date);
+                    var formattedDate = solveDate.getFullYear() + '-' + ('0' + (solveDate.getMonth() + 1)).slice(-2) + '-' + ('0' + solveDate.getDate()).slice(-2);
+                    var mezcla = data[0].scramble;
+                    var time_interval = data[0].time_interval;
+                    var timeid = data[0].id;
+
+                    console.log(data); // Ver los datos en la consola
+                    console.log(time_interval)
+
+                    console.log(mezcla)
+                    document.getElementById("mezcla").value = mezcla;
+                    document.getElementById("id_tiemposolve").textContent = timeid;
+
+                    document.getElementById("tiemposolve").textContent = time_interval;
+
+                    document.getElementById("fecha").value = formattedDate;
+
+                });
+            }
+    
+            }
+        } else if(index===2){
+                // Mostramos el modal cambiando su estilo display
         modal.style.display = "block";
         // Mostramos el div gray
         grayDiv.style.display = "block";
-        if(index===2){
             if(id===0){
                 $.get("/ao5detalle", function(data) {
                     // Convertir la fecha en el formato YYYY-MM-DD
@@ -558,7 +671,10 @@ function openModel(id, index) {
             }
           
         }else if(index===3){
-           
+               // Mostramos el modal cambiando su estilo display
+        modal.style.display = "block";
+        // Mostramos el div gray
+        grayDiv.style.display = "block";
             if(id===0){
                 $.get("/ao12detalle", function(data) {
                     // Convertir la fecha en el formato YYYY-MM-DD
@@ -638,6 +754,10 @@ function openModel(id, index) {
             }
             
         }else if(index===4){
+                // Mostramos el modal cambiando su estilo display
+        modal.style.display = "block";
+        // Mostramos el div gray
+        grayDiv.style.display = "block";
             if(id===0){
                 $.get("/ao100detalle", function(data) {
                     // Convertir la fecha en el formato YYYY-MM-DD
@@ -729,11 +849,15 @@ function openModel(id, index) {
     function cerrarModal() {
         // Seleccionamos el modal
         var modal = document.querySelector('.dialog.dialogstats');
+        var modalsolve = document.querySelector('.dialog.dialogcfm');
+
         var grayDiv = document.getElementById('gray');
 
         if (modal) {
             // Ocultamos el modal cambiando su estilo display
             modal.style.display = "none";
+            modalsolve.style.display = "none";
+
             grayDiv.style.display = "none";
 
         } else {

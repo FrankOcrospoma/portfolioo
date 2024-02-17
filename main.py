@@ -62,6 +62,81 @@ def guardar_tiempo():
 
     return jsonify({"message": "Tiempo guardado exitosamente"}), 200
 
+
+
+@app.route('/tiempodetalle')
+def tiempodetalle():
+    cur = conn.cursor()
+    user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
+
+    cur.execute("""
+                SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        WHERE user_id = %s
+        LIMIT 1;
+    """, (user_id,))
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+
+@app.route('/tiempodetalle/<int:ultimo_id>')
+def tiempodetalleid(ultimo_id):
+    cur = conn.cursor()
+    user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
+
+    cur.execute("""
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY solve_date DESC) AS row_num,
+               scramble,
+               time_interval,
+               ao5,
+               ao12,
+               ao100,
+               solve_date
+        FROM times
+        WHERE id <= %s AND user_id = %s
+        LIMIT 1;
+    """, (ultimo_id, user_id))
+    times = cur.fetchall()
+    cur.close()
+
+    times_list = []
+    for row in times:
+        times_list.append({
+            'id': row[0],
+            'row_num': row[1],
+            'scramble': row[2],
+            'time_interval': row[3],
+            'ao5': row[4],
+            'ao12': row[5],
+            'ao100': row[6],
+            'solve_date': row[7]
+        })
+
+    return jsonify(times_list)
+
+
 @app.route('/ao5detalle')
 def ao5detalle():
     cur = conn.cursor()

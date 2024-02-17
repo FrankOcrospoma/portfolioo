@@ -11,8 +11,8 @@
 
 <body>
     <div id="head">
-        <h1 style="font-family: monospace;" id="h1">Speed Cubing Timer de Frank'O <span
-                style="font-size: 80%; ">Última / </span><span id="siguiente">Siguiente</span> <span>mezcla</span>
+        <h1 style="font-family: monospace;" id="h1">Speed Cubing Timer de Frank'O <span style="font-size: 80%; ">Última
+                / </span><span id="siguiente">Siguiente</span> <span>mezcla</span>
         </h1>
         <div></div>
         <textarea id="scramble" readonly></textarea>
@@ -31,7 +31,7 @@
     </div>
     <div style="display: inline-block; font-size: 100px; color: red; position: absolute; right: 0; top: 350px;" id="8">
     </div>
-    <div  id="gray" style="opacity: 0.25; display: none;"></div>
+    <div id="gray" style="opacity: 0.25; display: none;"></div>
 
     <div id="aos">
         <span style="  color: #0026ff;">ao5: <span id="ao5"></span> </span><br>
@@ -77,26 +77,31 @@
                     <tr>
                         <input id="id_mejortiempo" type="hidden">
                         <td style="  font-weight: bold; ">Tiempo</td>
-                        <td  onclick="openModel(0,1)"  style="  color: #0026ff;" id="tiempo_actual"></td>
-                        <td onclick="openModel(document.getElementById('id_mejortiempo').textContent, 1)"  style="  color: #0026ff;" id="mejortiempo"></td>
+                        <td onclick="openModel(0,1)" style="  color: #0026ff;" id="tiempo_actual"></td>
+                        <td onclick="openModel(document.getElementById('id_mejortiempo').textContent, 1, 0)"
+                        style="  color: #0026ff;" id="mejortiempo"></td>
+
                     </tr>
                     <tr>
                         <input id="id_mejorao5" type="hidden">
                         <td style="  font-weight: bold; ">ao5</td>
-                        <td  onclick="openModel(0,2)" style="  color: #0026ff;" id="ao5-header"></td>
-                        <td onclick="openModel(document.getElementById('id_mejorao5').textContent, 2)"  style="  color: #0026ff;" id="mejorao5"></td>
+                        <td onclick="openModel(0,2)" style="  color: #0026ff;" id="ao5-header"></td>
+                        <td onclick="openModel(document.getElementById('id_mejorao5').textContent, 2)"
+                            style="  color: #0026ff;" id="mejorao5"></td>
                     </tr>
                     <tr>
                         <input id="id_mejorao12" type="hidden">
                         <td style="  font-weight: bold; ">ao12</td>
                         <td onclick="openModel(0,3)" style="  color: #0026ff;" id="ao12-header"></td>
-                        <td onclick="openModel(document.getElementById('id_mejorao12').textContent, 3)" style="  color: #0026ff;" id="mejorao12"></td>
+                        <td onclick="openModel(document.getElementById('id_mejorao12').textContent, 3)"
+                            style="  color: #0026ff;" id="mejorao12"></td>
                     </tr>
                     <tr>
                         <input id="id_mejorao100" type="hidden">
                         <td style="  font-weight: bold; ">ao100</td>
-                        <td  onclick="openModel(0,4)"   style="  color: #0026ff;" id="ao100-header"></td>
-                        <td onclick="openModel(document.getElementById('id_mejorao100').textContent, 4)"style="  color: #0026ff;" id="mejorao100"></td>
+                        <td onclick="openModel(0,4)" style="  color: #0026ff;" id="ao100-header"></td>
+                        <td onclick="openModel(document.getElementById('id_mejorao100').textContent, 4)"
+                            style="  color: #0026ff;" id="mejorao100"></td>
                     </tr>
                 </tbody>
             </table>
@@ -114,7 +119,7 @@
                     </tr>
                 </thead>
                 <tbody id="times-body">
-                    
+
                 </tbody>
             </table>
 
@@ -172,11 +177,60 @@
                         </div>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
     </div>
+    <div class="dialog dialogcfm" style="opacity: 0.98; display: none;">
+        <table style="margin: 0 auto;">
+            <tbody>
+                <tr style="height:0%;">
+                    <td>
+                        <div class="title">Solves No.372</div>
+                    </td>
+                </tr>
+                <tr style="height:100%;">
+                    <td style="position:relative;">
+                        <div class="value">
+                            <div  style="text-align: center; font-family: initial; font-size: 1.2em;"><span id="tiemposolve"
+                                    style="font-size:2.5em;">0.00</span><br><br><span class="click" data="c"> 📋
+                                </span>|<span class="click" data="p"> OK </span>|<span class="click" data="p"> +2
+                                </span>|<span class="click" data="p"> DNF </span>| <input type="button" data="d"
+                                    value="X"><br>
+                                <table style="display:inline-block;">
+                                    <tbody>
+                                        <tr>
+                                            <td>Comentario</td>
+                                            <td><input id="comentario" type="text" style="width: 8em;     padding-block: 1px;
+                                                padding-inline: 2px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="click" data="s"> mezcla</span></td>
+                                            <td><input id="mezcla" type="text" style="width: 8em;     padding-block: 1px;
+                                                padding-inline: 2px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fecha</td>
+                                            <td><input id="fecha" type="text" style="width: 8em;     padding-block: 1px;
+                                                padding-inline: 2px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="height:0%;">
+                    <input id="id_tiemposolve" type="hidden">
 
+                    <td>
+                        <div class="button"><input type="button" class="buttonOK" value="Aceptar"  onclick="cerrarModal()"><input type="button"
+                             class="buttonOK" value="Estadística de 1 solución."  onclick="openModel(document.getElementById('id_tiemposolve').textContent, 1, 0)"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quaternion@1.2.1/quaternion.js"></script>
 

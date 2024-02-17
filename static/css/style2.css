@@ -419,8 +419,35 @@ font-size: 2.5vh;
     appearance: none;
 
 }
-
-
+.dialogcfm {
+    left: 30%;
+    right: 30%;
+    top: 30%;
+    bottom: 30%;
+    width: 30% ;
+    margin:0 auto;
+    text-align: center
+}  
+.dialog .title {
+    font: 1.5em bold;
+    font-family: Impact;
+    white-space: break-spaces;
+    overflow-x: hidden;
+}
+input[type='text'] {
+    cursor: pointer;
+    border: 1px solid;
+    border: 0.1rem solid;
+    border-radius: 3px;
+    border-radius: 0.2rem;
+    padding: 1px;
+    padding: 0.1rem;
+    vertical-align: middle;
+    font-size: 1em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
 #miCanvas {
     display: flex;
     justify-content: center;
