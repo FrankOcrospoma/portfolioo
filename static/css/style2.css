@@ -26,15 +26,23 @@ body {
     text-align: center;
     background-color: #efc;
 }
+#diferencia{
+    font-size: 60px; 
+    color: red; 
+    display: none;
+}
 
 #timer {
 
     text-align: center;
     font-size: 2050%;
     font-family: 'lcd';
-    display: inline-block;
-    margin-left: 70px;
+    margin-left: 20%;
     margin-top: 10%;
+}
+
+#timer, #diferencia {
+    display: inline-block;
 }
 #scramble {
     font-size: 38px;

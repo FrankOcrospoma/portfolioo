@@ -1004,7 +1004,7 @@ function stopTimer() {
         document.getElementById("aos").style.display = "block";
         document.getElementById("contenedor_lateral").style.display = "block";
         document.getElementById("8").style.display = "none";
-        document.getElementById("diferencia").style.display = "block";
+        document.getElementById("diferencia").style.display = "";
         document.getElementById("timer").style.fontSize = "2250%";
         document.getElementById("leftbar").style.display = "block";
         document.getElementById("miCanvas").style.display = "";
