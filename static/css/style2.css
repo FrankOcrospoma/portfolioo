@@ -28,22 +28,23 @@ body {
 }
 
 #timer {
+
     text-align: center;
-    font-size: 2250%;
+    font-size: 2050%;
     font-family: 'lcd';
     display: inline-block;
     margin-left: 70px;
-    margin-top: -30px;
 }
 #scramble {
     font-size: 38px;
     margin-bottom: 20px;
     width: 98%;
     height: 60%;
+    max-height: 50%;
     flex: 1;
     font-family: monospace;
-text-align: center;
-background-color: #fdd;
+    text-align: center;
+    background-color: #fdd;
    /* Estilos para hacer el textarea no editable */
    pointer-events: none; /* Evita la interacción del usuario */
    resize: none; /* Evita que se pueda cambiar el tamaño */
@@ -56,7 +57,7 @@ background-color: #fdd;
     max-height: 500px;
 }
 #times-table-container {
-    max-height: 69%; /* Establecer el límite de altura */
+    max-height: 54%; /* Establecer el límite de altura */
     overflow-y: auto; /* Permitir el scroll vertical si el contenido supera el límite de altura */
 
   }
@@ -282,7 +283,7 @@ html:not(.m) #leftbar div>div:hover>span,
 
 }
 #aos{
-   font-size: 70px;
+   font-size: 400%;
    box-sizing: content-box;
 }
 

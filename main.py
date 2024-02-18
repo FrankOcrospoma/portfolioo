@@ -13,7 +13,7 @@ conn = psycopg2.connect(
     host='roundhouse.proxy.rlwy.net',
     port='55021'  # Puerto predeterminado de PostgreSQL
 )
-
+  
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -42,8 +42,8 @@ def vet():
 @app.route('/fantasma')
 def fantasma():
     return render_template('fantasma.html')
-@app.route('/guardar-tiempo', methods=['POST'])
-def guardar_tiempo():
+@app.route('/guardar-tiempo/<int:sesion_id>', methods=['POST'])
+def guardar_tiempo(sesion_id):
     data = request.get_json()
     time = data['time']
     scramble = data['scramble']
@@ -51,7 +51,7 @@ def guardar_tiempo():
 
     # Insertar el tiempo en la base de datos asociado al ID del usuario
     cur = conn.cursor()
-    cur.execute("INSERT INTO times (session_id, time_interval, scramble, user_id) VALUES (%s, %s, %s, %s)", (1, time, scramble, user_id))
+    cur.execute("INSERT INTO times (session_id, time_interval, scramble, user_id) VALUES (%s, %s, %s, %s)", (sesion_id, time, scramble, user_id))
     cur.execute("call calculate_ao5(%s, %s)", (1, user_id))
     cur.execute("call calculate_ao12(%s, %s)", (1, user_id))
     cur.execute("call calculate_ao100(%s, %s)", (1, user_id))

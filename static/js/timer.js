@@ -908,8 +908,10 @@ document.addEventListener("keyup", function (event) {
                 document.getElementById("timer").style.color = "black";
                 startTimer();
             } else if (running) {
+                var selectElement = document.getElementById("sessionSelect");
+                var selectedValue = selectElement.value;
                 stopTimer();
-                updateAVg();   
+                updateAVg(selectedValue);   
                 setRandomScramble();
                 updateTimer();
             } else if (!inspeccion) {
@@ -920,15 +922,17 @@ document.addEventListener("keyup", function (event) {
 });     
 
 document.addEventListener("DOMContentLoaded", function () {
-    updateAVg();    
     setRandomScramble();
-   
+    var selectElement = document.getElementById("sessionSelect");
+    var selectedValue;
   
     // Función para almacenar el valor seleccionado en una cookie
     function saveSelectedSession() {
-        var selectElement = document.getElementById("sessionSelect");
-        var selectedValue = selectElement.value;
+        selectElement = document.getElementById("sessionSelect");
+        selectedValue = selectElement.value;
         document.cookie = "selectedSession=" + selectedValue + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        updateTimesTable(selectedValue);
+        updateAVg(selectedValue);    
     }
 
     // Función para restaurar el valor seleccionado desde una cookie
@@ -940,6 +944,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var selectedValue = cookie.substring("selectedSession=".length);
                 document.getElementById("sessionSelect").value = selectedValue;
                 updateTimesTable(selectedValue);
+                updateAVg(selectedValue);   
                 break;
             }
         }
@@ -1010,17 +1015,18 @@ function stopTimer() {
         const currentTime = new Date().getTime();
         const elapsedTime = (currentTime - startTime) / 1000;
         const scramble = document.getElementById("scramble").textContent;
-        saveTime(elapsedTime, scramble);
         var selectElement = document.getElementById("sessionSelect");
         var selectedValue = selectElement.value;
         updateTimesTable(selectedValue);
+        saveTime(elapsedTime, scramble, selectedValue);
+
 
     }
 
 }
 
-function updateAVg() {
-    $.get("/times", function (data) {
+function updateAVg(sesion_id) {
+    $.get("/times/"+sesion_id, function (data) {
         const ultimoRegistro = data[0];
         const tiempoactual = ultimoRegistro.time_interval !== null ? ultimoRegistro.time_interval : "-";
         const ao5Header = ultimoRegistro.ao5 !== null ? ultimoRegistro.ao5 : "-";
@@ -1088,9 +1094,9 @@ function updateTimesTable(sesion_id) {
     });
 }
 
-function saveTime(time, scramble) {
+function saveTime(time, scramble, sesion_id) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/guardar-tiempo", true);
+    xhr.open("POST", "/guardar-tiempo/"+sesion_id, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
