@@ -944,7 +944,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var selectedValue = cookie.substring("selectedSession=".length);
                 document.getElementById("sessionSelect").value = selectedValue;
                 updateTimesTable(selectedValue);
-                updateAVg(selectedValue);   
+                updateAVg(selectedValu  e);   
                 break;
             }
         }
@@ -959,6 +959,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("sessionSelect").addEventListener("change", function() {
         saveSelectedSession();
     });
+    saveSelectedSession();
 
 });
 
