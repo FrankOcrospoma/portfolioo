@@ -923,13 +923,11 @@ document.addEventListener("keyup", function (event) {
 
 document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
-    var selectElement = document.getElementById("sessionSelect");
-    var selectedValue;
   
     // Función para almacenar el valor seleccionado en una cookie
     function saveSelectedSession() {
-        selectElement = document.getElementById("sessionSelect");
-        selectedValue = selectElement.value;
+        var selectElement = document.getElementById("sessionSelect");
+        var selectedValue = selectElement.value;
         document.cookie = "selectedSession=" + selectedValue + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
         updateTimesTable(selectedValue);
         updateAVg(selectedValue);    
