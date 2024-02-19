@@ -33,7 +33,7 @@ body {
 }
 
 #timer {
-
+    position: relative;
     text-align: center;
     font-size: 2050%;
     font-family: 'lcd';

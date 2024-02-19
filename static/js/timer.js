@@ -912,10 +912,11 @@ document.addEventListener("keyup", function (event) {
             } else if (running) {
                 var selectElement = document.getElementById("sessionSelect");
                 var selectedValue = selectElement.value;
-                stopTimer();
                 updateAVg(selectedValue);   
                 setRandomScramble();
                 updateTimer();
+                stopTimer();
+
             } else if (!inspeccion) {
                 startInspection();
             }
@@ -976,6 +977,7 @@ function startInspection() {
         document.getElementById("miCanvas").style.display = "none";
 
         document.getElementById("timer").style.fontSize = "3250%";
+        document.getElementById("timer").style.right = "10%"; 
         document.getElementById("timer").style.color = "red";
 
     }
@@ -1009,7 +1011,8 @@ function stopTimer() {
         document.getElementById("leftbar").style.display = "block";
         document.getElementById("miCanvas").style.display = "";
 
-        
+        document.getElementById("timer").style.right = "2%"; 
+
         document.getElementById("contenedor_cubo").style.display = "";
 
 
