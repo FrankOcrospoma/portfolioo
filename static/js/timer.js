@@ -1043,7 +1043,7 @@ function updateAVg(sesion_id) {
 
     });
 
-    $.get("/mejortiempo", function (data) {
+    $.get("/mejortiempo/"+sesion_id, function (data) {
         const ultimoRegistro = data[0];
         const mejor = ultimoRegistro.mejortiempo !== null ? ultimoRegistro.mejortiempo : "-";
         const mejorao5 = ultimoRegistro.ao5 !== null ? ultimoRegistro.mejorao5 : "-";

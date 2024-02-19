@@ -355,8 +355,8 @@ def ao100detalleid(ultimo_id):
     return jsonify(times_list)
 
 
-@app.route('/mejortiempo')
-def get_mejores():
+@app.route('/mejortiempo/<int:sesion_id>')
+def get_mejores(sesion_id):
     # Ejecutar una consulta para obtener los tiempos de la base de datos
     cur = conn.cursor()
     user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
@@ -392,7 +392,7 @@ def get_mejores():
 
         FROM 
             ranked_times;
-    """, (1, user_id))
+    """, (sesion_id, user_id))
     times = cur.fetchall()
     cur.close()
 
