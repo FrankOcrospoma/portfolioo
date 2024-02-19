@@ -1018,8 +1018,8 @@ function stopTimer() {
         const scramble = document.getElementById("scramble").textContent;
         var selectElement = document.getElementById("sessionSelect");
         var selectedValue = selectElement.value;
-        updateTimesTable(selectedValue);
         saveTime(elapsedTime, scramble, selectedValue);
+        updateTimesTable(selectedValue);
 
 
     }
