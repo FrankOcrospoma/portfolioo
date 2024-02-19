@@ -914,8 +914,9 @@ document.addEventListener("keyup", function (event) {
                 var selectedValue = selectElement.value;
                 updateAVg(selectedValue);   
                 setRandomScramble();
-                updateTimer();
                 stopTimer();
+                updateTimer();
+
 
             } else if (!inspeccion) {
                 startInspection();
@@ -928,7 +929,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
 
     restoreSelectedSession();
-        
+
     
     var selectElement = document.getElementById("sessionSelect");
     var selectedValue = selectElement.value;
@@ -1106,6 +1107,7 @@ function updateTimesTable(sesion_id) {
         agregarIndice();
 
     });
+    cambiarContenidoCelda()
 }
 
 function saveTime(time, scramble, sesion_id) {
@@ -1197,7 +1199,11 @@ function agregarTiempo(tiempo) {
     var hiddenId = document.createElement("input"); // Input oculto para almacenar el ID
     hiddenId.type = "hidden";
     hiddenId.value = tiempo.id; // Aquí almacenamos el ID en el input oculto
-    cellIndex.textContent = rowCount; // Asignar el número autoincremental al cellIndex
+
+    // Asignar un ID único a la celda cellIndex
+    var cellIndexId = 'cellIndex_' + rowCount;
+    cellIndex.setAttribute('id', cellIndexId);
+
     cellTime.textContent = tiempo.time_interval !== null ? tiempo.time_interval : "-";
     cellAo5.textContent = tiempo.ao5 !== null ? tiempo.ao5 : "-";
     cellAo12.textContent = tiempo.ao12 !== null ? tiempo.ao12 : "-";
@@ -1218,7 +1224,29 @@ function agregarTiempo(tiempo) {
     row.appendChild(cellAo12);
     var table = document.getElementById("times-body");
     table.appendChild(row);
+
+    // Obtener el último valor de rowCount después de la inserción en la tabla
+    var rowCountInteger = Math.floor(rowCount);
+    var rowCountDecimal = (rowCount - rowCountInteger).toFixed(2).slice(2);
+
+    // Establecer la parte entera y decimal en el HTML existente
+    document.querySelector('#timer .integer').textContent = rowCountInteger;
+    document.querySelector('#timer .decimal').textContent = '.' + rowCountDecimal;
 }
+
+function cambiarContenidoCelda() {
+    // Obtener el ID de la última celda cellIndex
+    var lastCellIndexId = 'cellIndex_' + rowCount;
+    
+    // Cambiar el contenido de la celda cellIndex
+    var cellIndex = document.getElementById(lastCellIndexId);
+    if (cellIndex) {
+        cellIndex.textContent = "Nuevo Contenido";
+    } else {
+        console.log("No se encontró la celda con ID:", lastCellIndexId);
+    }
+}
+
 
 function agregarIndice() {
     var table = document.getElementById("times-body");
