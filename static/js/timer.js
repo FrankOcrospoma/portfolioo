@@ -1001,6 +1001,13 @@ function startTimer() {
 function stopTimer() {
     if (running) {
         clearInterval(timerInterval);
+        const currentTime = new Date().getTime();
+        const elapsedTime = (currentTime - startTime) / 1000;
+        const scramble = document.getElementById("scramble").textContent;
+        var selectElement = document.getElementById("sessionSelect");
+        var selectedValue = selectElement.value;
+        saveTime(elapsedTime, scramble, selectedValue);
+        updateTimesTable(selectedValue);
         running = false;
         document.getElementById("head").style.display = "block";
         document.getElementById("aos").style.display = "block";
@@ -1016,13 +1023,7 @@ function stopTimer() {
         document.getElementById("contenedor_cubo").style.display = "";
 
 
-        const currentTime = new Date().getTime();
-        const elapsedTime = (currentTime - startTime) / 1000;
-        const scramble = document.getElementById("scramble").textContent;
-        var selectElement = document.getElementById("sessionSelect");
-        var selectedValue = selectElement.value;
-        saveTime(elapsedTime, scramble, selectedValue);
-        updateTimesTable(selectedValue);
+
 
 
     }
