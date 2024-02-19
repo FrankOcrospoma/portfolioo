@@ -1107,7 +1107,7 @@ function updateTimesTable(sesion_id) {
         agregarIndice();
 
     });
-    cambiarContenidoCelda()
+    // cambiarContenidoCelda()
 }
 
 function saveTime(time, scramble, sesion_id) {
