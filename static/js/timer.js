@@ -467,7 +467,9 @@ document.querySelector('select').addEventListener('change', function() {
     selectedOption = this.value;
     // Aquí puedes realizar la acción que desees con la opción seleccionada
     console.log('Opción seleccionada:', selectedOption);
-    updateTimesTable(selectedOption)
+    updateTimesTable(selectedOption);
+    updateAVg(selectedOption);
+
 });
 
 
@@ -923,14 +925,21 @@ document.addEventListener("keyup", function (event) {
 
 document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
-  
+
+    restoreSelectedSession();
+        
+    
+    var selectElement = document.getElementById("sessionSelect");
+    var selectedValue = selectElement.value;
+    updateTimesTable(selectedValue);
+    updateAVg(selectedValue);   
+    console.log('sii',selectedValue);
     // Función para almacenar el valor seleccionado en una cookie
     function saveSelectedSession() {
-        var selectElement = document.getElementById("sessionSelect");
-        var selectedValue = selectElement.value;
+        selectElement = document.getElementById("sessionSelect");
+        selectedValue = selectElement.value;
         document.cookie = "selectedSession=" + selectedValue + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-        updateTimesTable(selectedValue);
-        updateAVg(selectedValue);    
+        console.log('guardado:'+selectedValue)
     }
 
     // Función para restaurar el valor seleccionado desde una cookie
@@ -941,23 +950,16 @@ document.addEventListener("DOMContentLoaded", function () {
             if (cookie.startsWith("selectedSession=")) {
                 var selectedValue = cookie.substring("selectedSession=".length);
                 document.getElementById("sessionSelect").value = selectedValue;
-                updateTimesTable(selectedValue);
-                updateAVg(selectedValue);   
                 break;
             }
         }
     }
 
-    // Ejecutar la función para restaurar el valor seleccionado al cargar la página
-    window.onload = function() {
-        restoreSelectedSession();
-    };
 
     // Ejecutar la función para guardar el valor seleccionado al cambiar la selección
     document.getElementById("sessionSelect").addEventListener("change", function() {
         saveSelectedSession();
     });
-    saveSelectedSession();
 
 });
 
@@ -1027,18 +1029,27 @@ function stopTimer() {
 function updateAVg(sesion_id) {
     $.get("/times/"+sesion_id, function (data) {
         const ultimoRegistro = data[0];
-        const tiempoactual = ultimoRegistro.time_interval !== null ? ultimoRegistro.time_interval : "-";
-        const ao5Header = ultimoRegistro.ao5 !== null ? ultimoRegistro.ao5 : "-";
-        const ao12Header = ultimoRegistro.ao12 !== null ? ultimoRegistro.ao12 : "-";
-        const ao100Header = ultimoRegistro.ao100 !== null ? ultimoRegistro.ao100 : "-";
+        if(ultimoRegistro){
+            const tiempoactual = ultimoRegistro.time_interval !== null ? ultimoRegistro.time_interval : "-";
+            const ao5Header = ultimoRegistro.ao5 !== null ? ultimoRegistro.ao5 : "-";
+            const ao12Header = ultimoRegistro.ao12 !== null ? ultimoRegistro.ao12 : "-";
+            const ao100Header = ultimoRegistro.ao100 !== null ? ultimoRegistro.ao100 : "-";
+    
+            document.getElementById("ao5-header").textContent = ao5Header;
+            document.getElementById("ao12-header").textContent =  ao12Header;
+            document.getElementById("ao100-header").textContent =  ao100Header;
+            document.getElementById("tiempo_actual").textContent =  tiempoactual;
+            document.getElementById("ao5").textContent = ao5Header;
+            document.getElementById("ao12").textContent =  ao12Header; 
+        }else{
+            document.getElementById("ao5-header").textContent = "-";
+            document.getElementById("ao12-header").textContent =  "-";
+            document.getElementById("ao100-header").textContent =  "-";
+            document.getElementById("tiempo_actual").textContent = "-";
+            document.getElementById("ao5").textContent = "-";
+            document.getElementById("ao12").textContent = "-";
 
-        document.getElementById("ao5-header").textContent = ao5Header;
-        document.getElementById("ao12-header").textContent =  ao12Header;
-        document.getElementById("ao100-header").textContent =  ao100Header;
-        document.getElementById("tiempo_actual").textContent =  tiempoactual;
-        document.getElementById("ao5").textContent = ao5Header;
-        document.getElementById("ao12").textContent =  ao12Header;
-
+        }
     });
 
     $.get("/mejortiempo/"+sesion_id, function (data) {
@@ -1183,7 +1194,7 @@ function agregarTiempo(tiempo) {
     hiddenId.type = "hidden";
     hiddenId.value = tiempo.id; // Aquí almacenamos el ID en el input oculto
     cellIndex.textContent = rowCount; // Asignar el número autoincremental al cellIndex
-    cellTime.textContent = tiempo.time_interval;
+    cellTime.textContent = tiempo.time_interval !== null ? tiempo.time_interval : "-";
     cellAo5.textContent = tiempo.ao5 !== null ? tiempo.ao5 : "-";
     cellAo12.textContent = tiempo.ao12 !== null ? tiempo.ao12 : "-";
     
