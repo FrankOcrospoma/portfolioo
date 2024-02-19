@@ -963,6 +963,21 @@ document.addEventListener("DOMContentLoaded", function () {
         saveSelectedSession();
     });
 
+
+     // Leer el valor almacenado en la cookie
+     const cookieData = document.cookie.split(';').find(cookie => cookie.trim().startsWith('elapsedTime='));
+     if (cookieData) {
+         const elapsedTime = parseFloat(cookieData.split('=')[1]);
+         
+         // Dividir en parte entera y parte decimal
+         const integerPart = Math.floor(elapsedTime);
+         const decimalPart = (elapsedTime - integerPart).toFixed(2).slice(2);
+ 
+         // Actualizar los elementos <span> correspondientes
+         document.querySelector('#timer .integer').textContent = integerPart;
+         document.querySelector('#timer .decimal').textContent = '.' + decimalPart;
+     }
+
 });
 
 function startInspection() {
@@ -1004,6 +1019,10 @@ function stopTimer() {
         clearInterval(timerInterval);
         const currentTime = new Date().getTime();
         const elapsedTime = (currentTime - startTime) / 1000;
+        
+        // Almacenar elapsedTime en una cookie
+        document.cookie = `elapsedTime=${elapsedTime}`;
+
         const scramble = document.getElementById("scramble").textContent;
         var selectElement = document.getElementById("sessionSelect");
         var selectedValue = selectElement.value;
@@ -1018,17 +1037,9 @@ function stopTimer() {
         document.getElementById("timer").style.fontSize = "2250%";
         document.getElementById("leftbar").style.display = "block";
         document.getElementById("miCanvas").style.display = "";
-
-        document.getElementById("timer").style.right = "2%"; 
-
+        document.getElementById("timer").style.right = "2%";
         document.getElementById("contenedor_cubo").style.display = "";
-
-
-
-
-
     }
-
 }
 
 function updateAVg(sesion_id) {
@@ -1200,9 +1211,6 @@ function agregarTiempo(tiempo) {
     hiddenId.type = "hidden";
     hiddenId.value = tiempo.id; // Aquí almacenamos el ID en el input oculto
 
-    // Asignar un ID único a la celda cellIndex
-    var cellIndexId = 'cellIndex_' + rowCount;
-    cellIndex.setAttribute('id', cellIndexId);
 
     cellTime.textContent = tiempo.time_interval !== null ? tiempo.time_interval : "-";
     cellAo5.textContent = tiempo.ao5 !== null ? tiempo.ao5 : "-";
@@ -1225,13 +1233,6 @@ function agregarTiempo(tiempo) {
     var table = document.getElementById("times-body");
     table.appendChild(row);
 
-    // Obtener el último valor de rowCount después de la inserción en la tabla
-    var rowCountInteger = Math.floor(rowCount);
-    var rowCountDecimal = (rowCount - rowCountInteger).toFixed(2).slice(2);
-
-    // Establecer la parte entera y decimal en el HTML existente
-    document.querySelector('#timer .integer').textContent = rowCountInteger;
-    document.querySelector('#timer .decimal').textContent = '.' + rowCountDecimal;
 }
 
 function cambiarContenidoCelda() {
