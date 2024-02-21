@@ -280,6 +280,14 @@ html:not(.m) #leftbar div>div:hover>span,
         transform: translateX(-100%);
     }
 }
+#timer, #diferencia {
+    user-select: none; /* Evita la selección del contenido */
+}
+
+#timer * {
+    user-select: none; /* Evita la selección del contenido para todos los elementos hijos */
+}
+
 #table_solves, #table_aos{
     width: 95%;
     margin: 0 auto; /* Margen automático a la izquierda y a la derecha para centrar la tabla */
