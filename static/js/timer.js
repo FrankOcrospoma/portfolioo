@@ -1092,7 +1092,7 @@ function updateAVg(sesion_id) {
 
 
     });
-    $.get("/get_time_difference", function (data) {
+    $.get("/get_time_difference/"+sesion_id, function (data) {
         const diferencia = data;
         const dif = diferencia.difference !== null ? diferencia.difference : "-";
         let dife;

@@ -421,16 +421,16 @@ def get_times(sesion_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/get_time_difference')
-def get_time_difference():
+@app.route('/get_time_difference/<int:sesion_id>')
+def get_time_difference(sesion_id):
     cur = conn.cursor()
     user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
 
     cur.execute("""
         SELECT 
-            (SELECT time_interval FROM times WHERE user_id = %s ORDER BY solve_date DESC LIMIT 1) - 
-            (SELECT time_interval FROM times WHERE user_id = %s ORDER BY solve_date DESC LIMIT 1 OFFSET 1) AS difference;
-    """, (user_id, user_id))
+            (SELECT time_interval FROM times WHERE user_id = %s and session_id = %s ORDER BY solve_date DESC LIMIT 1) - 
+            (SELECT time_interval FROM times WHERE user_id = %s and session_id = %s ORDER BY solve_date DESC LIMIT 1 OFFSET 1) AS difference;
+    """, (user_id, sesion_id, user_id, sesion_id))
 
     # Obtener el resultado
     difference = cur.fetchone()[0]
