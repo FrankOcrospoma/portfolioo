@@ -1028,6 +1028,8 @@ function stopTimer() {
         var selectedValue = selectElement.value;
         saveTime(elapsedTime, scramble, selectedValue);
         updateTimesTable(selectedValue);
+        updateAVg(selectedValue);   
+
         running = false;
         document.getElementById("head").style.display = "block";
         document.getElementById("aos").style.display = "block";
