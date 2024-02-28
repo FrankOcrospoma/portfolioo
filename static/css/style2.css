@@ -66,7 +66,7 @@ body {
     max-height: 500px;
 }
 #times-table-container {
-    height: 62.5%; /* Establecer el límite de altura */
+    height: 61%; /* Establecer el límite de altura */
     overflow-y: auto; /* Permitir el scroll vertical si el contenido supera el límite de altura */
     bottom: 0; /* Esto hará que el elemento choque con la parte inferior */
 
