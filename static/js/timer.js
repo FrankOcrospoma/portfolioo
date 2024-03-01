@@ -1,4 +1,3 @@
-
 class Vector {
     constructor(...vals) {
         this.vals = vals;
@@ -1310,7 +1309,35 @@ function getRandomElement(array) {
 function isForbiddenMove(previousMove, currentMove) {
     return previousMove && forbiddenMoves[previousMove].includes(currentMove);
 }
+var cubo_color=false;
+var tabla_color=false;
 
+function toggleColor(element) {
+    var head = document.getElementById('head');
+    var contenedor_cubo = document.getElementById('miCanvas');
+    var contenedor_lateral = document.getElementById('contenedor_lateral');
 
+    console.log(element.classList[1]);
+    if (element.classList.contains("active")) {
+        element.classList.remove("active");
+        if (element.classList[1]==="c3"){
+            head.style.display = "none";    
+        }else if(element.classList[1]==="c6"){
+            contenedor_cubo.style.display = "none";    
+        }else{
+            contenedor_lateral.style.display = "none";    
+        }
+    } else {
+        element.classList.toggle("active");
+        if (element.classList[1]==="c3"){
+            head.style.display = "block";    
+        }else if(element.classList[1]==="c6"){
+            contenedor_cubo.style.display = "block";    
+        } else{
+            contenedor_lateral.style.display = "block";    
+        }       
+    }
+    
+}
 
 

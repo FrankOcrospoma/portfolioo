@@ -59,8 +59,16 @@ body {
    resize: none; /* Evita que se pueda cambiar el tamaño */
 }
 
-
-
+/* Define el color de fondo cuando está activo (haciendo clic) */
+.mybutton.c3.active {
+    background-color: rgb(255, 158, 158);
+}
+.mybutton.c4.active {
+    background-color: rgb(255, 158, 158);
+}
+.mybutton.c6.active {
+    background-color: rgb(255, 158, 158);
+}
 #average {
     width: 100%;
     max-height: 500px;
@@ -157,7 +165,7 @@ body {
     border: 0.15rem solid;
     border-color: #cda;
     border-radius: 0.35rem;
-    width: 15.5rem;
+    width: 15.7rem;
     height: 33%;
 }
 
