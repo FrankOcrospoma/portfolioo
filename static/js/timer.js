@@ -928,13 +928,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     restoreSelectedSession();
     restoreControles();
-    var head = document.getElementById('head');
-    var contenedor_cubo = document.getElementById('miCanvas');
-    var contenedor_lateral = document.getElementById('contenedor_lateral');
-    var c3 = document.getElementById('c3');
-    var c4 = document.getElementById('c4');
-    var c6 = document.getElementById('c6');
-
  
     var selectElement = document.getElementById("sessionSelect");
     var selectedValue = selectElement.value;
