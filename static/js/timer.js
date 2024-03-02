@@ -114,6 +114,7 @@ function createCanvas(x, y) {
     document.body.appendChild(canvas);
     var ctxt = canvas.getContext('2d');
     return { ctxt: ctxt, canvas: canvas };
+
 }
 
 var lastUpdate = Date.now();
@@ -856,7 +857,7 @@ function openModel(id, index, det) {
 }
 
     
-    function cerrarModal() {
+function cerrarModal() {
         // Seleccionamos el modal
         var modal = document.querySelector('.dialog.dialogstats');
         var modalsolve = document.querySelector('.dialog.dialogcfm');
@@ -873,7 +874,7 @@ function openModel(id, index, det) {
         } else {
             console.error("No se pudo encontrar el modal '.dialog.dialogstats'.");
         }
-    }
+}
     
 
 let timerInterval = 0;
@@ -883,7 +884,6 @@ let pressingSpace = false;
 let inspeccion = false;
 
 document.addEventListener("keydown", function (event) {
-    if (event.key === " ") {
         if (!pressingSpace) {
             pressingSpace = true;
             if (!running) {
@@ -897,11 +897,10 @@ document.addEventListener("keydown", function (event) {
                 }
             }, 700);
         }
-    }
+    
 });
 
 document.addEventListener("keyup", function (event) {
-    if (event.key === " ") {
         if (pressingSpace) {
             pressingSpace = false;
             const timerColor = document.getElementById("timer").style.color;
@@ -921,20 +920,26 @@ document.addEventListener("keyup", function (event) {
                 startInspection();
             }
         }
-    }
+    
 });     
 
 document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
 
     restoreSelectedSession();
+    restoreControles();
+    var head = document.getElementById('head');
+    var contenedor_cubo = document.getElementById('miCanvas');
+    var contenedor_lateral = document.getElementById('contenedor_lateral');
+    var c3 = document.getElementById('c3');
+    var c4 = document.getElementById('c4');
+    var c6 = document.getElementById('c6');
 
-    
+ 
     var selectElement = document.getElementById("sessionSelect");
     var selectedValue = selectElement.value;
     updateTimesTable(selectedValue);
     updateAVg(selectedValue);   
-    console.log('sii',selectedValue);
     // Función para almacenar el valor seleccionado en una cookie
     function saveSelectedSession() {
         selectElement = document.getElementById("sessionSelect");
@@ -955,6 +960,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
+
 
 
     // Ejecutar la función para guardar el valor seleccionado al cambiar la selección
@@ -978,6 +984,63 @@ document.addEventListener("DOMContentLoaded", function () {
      }
 
 });
+
+
+function saveControles(display) {
+    if (display === "headN") {
+        localStorage.setItem("head", display);
+    } else if( display === "headB") {
+        localStorage.setItem("head", display);
+    }
+    if (display === "tablaN") {
+        localStorage.setItem("tabla", display);
+    } else if( display === "tablaB") {
+        localStorage.setItem("tabla", display);
+    }
+    if (display === "cuboN") {
+        localStorage.setItem("cubo", display);
+    } else if( display === "cuboB") {
+        localStorage.setItem("cubo", display);
+    }
+    console.log('guardado:' + display)
+}
+
+
+function restoreControles() {
+    var head = localStorage.getItem("head");
+    var cubo = localStorage.getItem("cubo");
+    var tabla = localStorage.getItem("tabla");
+
+    console.log(head);
+    console.log(cubo);
+    console.log(tabla);
+
+    if (head === "headB") {
+        document.getElementById('c3').classList.toggle("active");
+        document.getElementById('head').style.display = "block";
+    } else  if (head === "headN") {
+        document.getElementById('c3').classList.remove("active");
+        document.getElementById('head').style.display = "none";
+    }
+
+    if (cubo === "cuboB") {
+        document.getElementById('miCanvas').style.display = "block";
+        document.getElementById('c6').classList.toggle("active");
+
+    } else  if (cubo === "cuboN"){
+        document.getElementById('c6').classList.remove("active");
+        document.getElementById('miCanvas').style.display = "none";
+    }
+
+    if (tabla === "tablaB") {
+        document.getElementById('c4').classList.toggle("active");
+        document.getElementById('contenedor_lateral').style.display = "block";
+    } else if (tabla === "tablaN") {
+        document.getElementById('c4').classList.remove("active");
+        document.getElementById('contenedor_lateral').style.display = "none";
+    }
+}
+
 
 function startInspection() {
     if (!running && !inspeccion) {
@@ -1317,24 +1380,31 @@ function toggleColor(element) {
     var contenedor_cubo = document.getElementById('miCanvas');
     var contenedor_lateral = document.getElementById('contenedor_lateral');
 
-    console.log(element.classList[1]);
+    console.log(head.style.display);
     if (element.classList.contains("active")) {
         element.classList.remove("active");
         if (element.classList[1]==="c3"){
-            head.style.display = "none";    
+            head.style.display = "none";
+            saveControles("headN");    
         }else if(element.classList[1]==="c6"){
             contenedor_cubo.style.display = "none";    
+            saveControles("cuboN");    
         }else{
             contenedor_lateral.style.display = "none";    
+            saveControles("tablaN");    
+
         }
     } else {
         element.classList.toggle("active");
         if (element.classList[1]==="c3"){
-            head.style.display = "block";    
+            head.style.display = "block";
+            saveControles("headB");    
         }else if(element.classList[1]==="c6"){
-            contenedor_cubo.style.display = "block";    
+            contenedor_cubo.style.display = "block";  
+            saveControles("cuboB");      
         } else{
-            contenedor_lateral.style.display = "block";    
+            contenedor_lateral.style.display = "block"; 
+            saveControles("tablaB");       
         }       
     }
     
