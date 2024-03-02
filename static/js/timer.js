@@ -913,7 +913,6 @@ document.addEventListener("keyup", function (event) {
                 updateAVg(selectedValue);   
                 setRandomScramble();
                 stopTimer();
-                updateTimer();
 
 
             } else if (!inspeccion) {
@@ -1081,9 +1080,8 @@ function stopTimer() {
         const scramble = document.getElementById("scramble").textContent;
         var selectElement = document.getElementById("sessionSelect");
         var selectedValue = selectElement.value;
-        saveTime(elapsedTime, scramble, selectedValue);
-        updateTimesTable(selectedValue);
-        updateAVg(selectedValue);   
+        console.log('weveo',elapsedTime)
+
 
         running = false;
         document.getElementById("head").style.display = "block";
@@ -1096,6 +1094,11 @@ function stopTimer() {
         document.getElementById("miCanvas").style.display = "";
         document.getElementById("timer").style.right = "2%";
         document.getElementById("contenedor_cubo").style.display = "";
+        saveTime(elapsedTime, scramble, selectedValue);
+        updateTimesTable(selectedValue);
+        updateAVg(selectedValue);   
+        updateTimers(elapsedTime);
+
     }
 }
 
@@ -1187,9 +1190,18 @@ function saveTime(time, scramble, sesion_id) {
         }
     };
     var data = JSON.stringify({ time: time, scramble: scramble });
+    console.log("aja",time)
+
     xhr.send(data);
 }
 
+function updateTimers(elapsedTime) {
+    const seconds = Math.floor(elapsedTime);
+    const milliseconds = Math.floor((elapsedTime - seconds) * 100); 
+    document.getElementById("timer").innerHTML = seconds + "<span style='font-size: 250px;'>." + (milliseconds < 10 ? "0" + milliseconds : milliseconds) + "</span>";
+    
+}
+ 
 function updateTimer() {
     const currentTime = new Date().getTime();
     const elapsedTime = (currentTime - startTime) / 1000;
@@ -1198,12 +1210,8 @@ function updateTimer() {
     const firstDecimal = Math.floor(milliseconds / 10); // Obtener solo el primer dígito del decimal
     if (running) {
         document.getElementById("timer").innerHTML = seconds + "<span style='font-size: 250px;'>." + firstDecimal + "</span>";
-    } else {
-        document.getElementById("timer").innerHTML = seconds + "<span style='font-size: 250px;'>." + (milliseconds < 10 ? "0" + milliseconds : milliseconds) + "</span>";
-    }
+    } 
 }
- 
-
 
 function startCountdown() {
     let countdown = 15;

@@ -42,6 +42,9 @@ def vet():
 @app.route('/fantasma')
 def fantasma():
     return render_template('fantasma.html')
+
+import math
+
 @app.route('/guardar-tiempo/<int:sesion_id>', methods=['POST'])
 def guardar_tiempo(sesion_id):
     data = request.get_json()
@@ -49,19 +52,21 @@ def guardar_tiempo(sesion_id):
     scramble = data['scramble']
     user_id = session.get('user_id')  # Obtener el ID del usuario de la sesión
 
+    # Truncar el tiempo a dos decimales sin redondear
+    time = math.floor(time * 100) / 100
+
     # Insertar el tiempo en la base de datos asociado al ID del usuario
     cur = conn.cursor()
     cur.execute("INSERT INTO times (session_id, time_interval, scramble, user_id) VALUES (%s, %s, %s, %s)", (sesion_id, time, scramble, user_id))
     cur.execute("call calculate_ao5(%s, %s)", (sesion_id, user_id))
     cur.execute("call calculate_ao12(%s, %s)", (sesion_id, user_id))
     cur.execute("call calculate_ao100(%s, %s)", (sesion_id, user_id))
-
+    print(time)
 
     conn.commit()
     cur.close()
 
     return jsonify({"message": "Tiempo guardado exitosamente"}), 200
-
 
 
 @app.route('/tiempodetalle')
