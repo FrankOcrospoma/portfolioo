@@ -3,8 +3,7 @@ from flask import Flask, request, jsonify, render_template, session
 import psycopg2
 
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = 'frank'  # Asegúrate de definir una clave secreta para las sesiones
-
+app.secret_key = 'frank'  
 # Configura la conexión a la base de datos
 conn = psycopg2.connect(
     dbname='timer',
