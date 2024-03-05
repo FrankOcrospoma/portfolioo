@@ -152,9 +152,6 @@ function round(number, decimals) {
     return Math.round(number * mul) / mul;
 }
 
-
-
-
 var colormap = [
     [new Vector(0, 1, 0), 'white'],
     [new Vector(0, 0, -1), 'green'],
@@ -463,6 +460,11 @@ function drawCube(cube, ctxt) {
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var selectedOption;
+let timerInterval = 0;
+let startTime;
+let running = false;
+let pressingSpace = false;
+let inspeccion = false;
 document.querySelector('select').addEventListener('change', function() {
     selectedOption = this.value;
     // Aquí puedes realizar la acción que desees con la opción seleccionada
@@ -875,15 +877,11 @@ function cerrarModal() {
             console.error("No se pudo encontrar el modal '.dialog.dialogstats'.");
         }
 }
-    
 
-let timerInterval = 0;
-let startTime;
-let running = false;
-let pressingSpace = false;
-let inspeccion = false;
 
 document.addEventListener("keydown", function (event) {
+    if (event.key === " ") {
+
         if (!pressingSpace) {
             pressingSpace = true;
             if (!running) {
@@ -897,10 +895,12 @@ document.addEventListener("keydown", function (event) {
                 }
             }, 700);
         }
+    }
     
 });
 
 document.addEventListener("keyup", function (event) {
+    if (event.key === " ") {
         if (pressingSpace) {
             pressingSpace = false;
             const timerColor = document.getElementById("timer").style.color;
@@ -913,18 +913,15 @@ document.addEventListener("keyup", function (event) {
                 updateAVg(selectedValue);   
                 setRandomScramble();
                 stopTimer();
-
-
             } else if (!inspeccion) {
                 startInspection();
             }
         }
-    
+    }
 });     
 
 document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
-
     restoreSelectedSession();
     restoreControles();
  
