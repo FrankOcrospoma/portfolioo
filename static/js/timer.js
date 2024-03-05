@@ -923,12 +923,16 @@ document.addEventListener("keyup", function (event) {
 document.addEventListener("DOMContentLoaded", function () {
     setRandomScramble();
     restoreSelectedSession();
-    restoreControles();
+    
  
     var selectElement = document.getElementById("sessionSelect");
     var selectedValue = selectElement.value;
     updateTimesTable(selectedValue);
-    updateAVg(selectedValue);   
+    updateAVg(selectedValue);
+    restoreControles();   
+    
+
+
     // Función para almacenar el valor seleccionado en una cookie
     function saveSelectedSession() {
         selectElement = document.getElementById("sessionSelect");
@@ -994,7 +998,6 @@ function saveControles(display) {
     console.log('guardado:' + display)
 }
 
-
 function restoreControles() {
     var head = localStorage.getItem("head");
     var cubo = localStorage.getItem("cubo");
@@ -1005,8 +1008,8 @@ function restoreControles() {
     console.log(tabla);
 
     if (head === "headB") {
-        document.getElementById('c3').classList.toggle("active");
         document.getElementById('head').style.display = "block";
+
     } else  if (head === "headN") {
         document.getElementById('c3').classList.remove("active");
         document.getElementById('head').style.display = "none";
@@ -1014,7 +1017,6 @@ function restoreControles() {
 
     if (cubo === "cuboB") {
         document.getElementById('miCanvas').style.display = "block";
-        document.getElementById('c6').classList.toggle("active");
 
     } else  if (cubo === "cuboN"){
         document.getElementById('c6').classList.remove("active");
@@ -1022,14 +1024,12 @@ function restoreControles() {
     }
 
     if (tabla === "tablaB") {
-        document.getElementById('c4').classList.toggle("active");
         document.getElementById('contenedor_lateral').style.display = "block";
     } else if (tabla === "tablaN") {
         document.getElementById('c4').classList.remove("active");
         document.getElementById('contenedor_lateral').style.display = "none";
     }
 }
-
 
 function startInspection() {
     if (!running && !inspeccion) {
