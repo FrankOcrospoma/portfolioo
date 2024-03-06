@@ -555,3 +555,84 @@ input[type='text'] {
     margin-left: -20PX;
 
 }
+
+
+
+
+
+.dialoglogo {
+	left: 15%;
+	right: 15%;
+	top: 15%;
+	bottom: 15%;
+}
+
+.dialogoption, .dialogshare {
+	left: 25%;
+	right: 25%;
+	top: 20%;
+	bottom: 20%;
+}
+
+.dialogcfm {
+	left: 30%;
+	right: 30%;
+	top: 30%;
+	bottom: 30%;
+}
+
+.dialoginput, .dialogstats, .dialogexport, .dialogscropt {
+	left: 20%;
+	right: 20%;
+	top: 20%;
+	bottom: 20%;
+}
+
+.dialogcasestats {
+	left: 30%;
+	right: 30%;
+	top: 15%;
+	bottom: 15%;
+}
+
+.dialogcasestats .table {
+	width: 100%;
+	font-size: 1.5em;
+}
+
+.dialogssmgr {
+	left: 15%;
+	right: 15%;
+	top: 20%;
+	bottom: 20%;
+}
+
+.dialogexport {
+	top: 15%;
+	bottom: 15%;
+}
+
+.sflt > div {
+	white-space: nowrap;
+}
+
+.sflt > div > div {
+	white-space: normal;
+}
+
+.dialogscropt .sflt label, .dialogscropt .sflt > div > div.sgrp > span:first-child {
+	display: inline-block;
+	min-width: 45%;
+	text-align: left;
+	padding: 0.2em 0.2em 0.2em 5%;
+}
+
+.dialogscropt .sflt label {
+	min-width: 24%;
+}
+
+.dialogscropt .bimg {
+	border: 1px dashed;
+	border-radius: 3px;
+	border-radius: 0.2rem;
+}
