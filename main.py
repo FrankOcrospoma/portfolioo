@@ -16,6 +16,16 @@ conn = psycopg2.connect(
 @app.route('/')
 def index():
     return render_template('index.html')
+from flask import send_file
+
+@app.route('/descargar-cv')
+def descargar_cv():
+    try:
+        return send_file('Curriculum_Frank.pdf', as_attachment=True)
+    except Exception as e:
+        return str(e), 404
+
+
 @app.route('/timer-cube')
 def index_timer():
     if 'user_id' not in session:
